@@ -1,0 +1,12 @@
+# AI Commandments for Automaton Auditor
+
+## Prioritize Structural Evidence
+- Always prioritize Abstract Syntax Tree (AST) analysis and other structural evidence over text-matching techniques.
+
+## Ensure Separation of Concerns
+- Nodes should operate independently and only interact through the shared `AgentState`. Avoid coupling logic between nodes.
+
+## Test-First Generation
+- Before implementing a node, define a simple test case to verify its specific functionality. For example:
+  - A test for the Prosecutor should validate its ability to identify a known flaw.
+  - A test for the Git Forensics tool should ensure it handles missing repositories gracefully.
