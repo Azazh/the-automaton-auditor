@@ -6,6 +6,32 @@ Copilot must treat these as non-optional constraints.
 
 ---
 
+# References to Standards and Governance
+
+The following documents provide additional rules, standards, and governance protocols that must be adhered to in the Automaton Auditor project:
+
+1. **Code Style Standards**
+   - Location: `docs/standards/code_style.md`
+   - Description: Defines the technical law for the project, including Pydantic rigor, parallel state management, strict typing, asynchronous patterns, and separation of concerns.
+
+2. **CI Pipeline Specification**
+   - Location: `docs/standards/ci_pipeline_spec.md`
+   - Description: Details the GitHub Actions CI pipeline stages, including forensic scans, typing validation, judicial integrity tests, and elite-tier checks like LangSmith integration and Git narrative validation.
+
+3. **Testing SOP**
+   - Location: `docs/standards/testing_sop.md`
+   - Description: Outlines the standard operating procedures for testing, including unit, integration, and adversarial tests.
+
+4. **Git Protocol**
+   - Location: `docs/standards/git_protocol.md`
+   - Description: Specifies the rules for Git workflows, including branch naming conventions, commit message standards, and pull request guidelines.
+
+5. **Self-Improvement Documentation**
+   - Location: `audit/SELF_IMPROVEMENT.md`
+   - Description: Tracks how peer feedback and iterative improvements enhance the detection logic and overall project quality.
+
+---
+
 # 1. CORE PHILOSOPHY — FROM GENERATION TO GOVERNANCE
 
 ## Rule 1.1 — Metacognition First
