@@ -58,7 +58,7 @@ graph TD
 | **Pydantic** | Enforces state rigor and validation         |
 | **AST**      | Enables structural forensic analysis        |
 
----
+---git 
 
 ## 🚀 Interim Features
 
