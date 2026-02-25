@@ -10,7 +10,7 @@ import tempfile
 import subprocess
 import os
 import ast
-from typing import List
+from typing import List, Dict
 
 def clone_repo(repo_url: str, branch: str = "main") -> str:
     """
@@ -38,7 +38,7 @@ def clone_repo(repo_url: str, branch: str = "main") -> str:
         except subprocess.CalledProcessError as e:
             raise RuntimeError(f"Failed to clone repository: {e.stderr}")
 
-def analyze_graph_structure(path: str) -> bool:
+def analyze_graph_structure(path: str) -> Dict[str, List[str]]:
     """
     Analyze the Python files in the given path to verify StateGraph wiring.
 
@@ -46,8 +46,9 @@ def analyze_graph_structure(path: str) -> bool:
         path (str): The directory path to analyze.
 
     Returns:
-        bool: True if the StateGraph is correctly wired, False otherwise.
+        Dict[str, List[str]]: A dictionary mapping node names to their connected edges.
     """
+    graph_structure = {}
     for root, _, files in os.walk(path):
         for file in files:
             if file.endswith(".py"):
@@ -58,10 +59,14 @@ def analyze_graph_structure(path: str) -> bool:
                         for node in ast.walk(tree):
                             if isinstance(node, ast.Call) and hasattr(node.func, "attr"):
                                 if node.func.attr == "add_edge":
-                                    return True
+                                    source = node.args[0].id if hasattr(node.args[0], "id") else "unknown"
+                                    target = node.args[1].id if hasattr(node.args[1], "id") else "unknown"
+                                    if source not in graph_structure:
+                                        graph_structure[source] = []
+                                    graph_structure[source].append(target)
                     except SyntaxError:
                         continue
-    return False
+    return graph_structure
 
 def extract_git_narrative(repo_path: str) -> List[str]:
     """
