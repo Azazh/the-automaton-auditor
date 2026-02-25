@@ -10,7 +10,10 @@ import tempfile
 import subprocess
 import os
 import ast
-from typing import List, Dict
+from typing import List, Dict, Any
+from src.state import Evidence
+from datetime import datetime
+import hashlib
 
 def clone_repo(repo_url: str, branch: str = "main") -> str:
     """
@@ -37,6 +40,57 @@ def clone_repo(repo_url: str, branch: str = "main") -> str:
             return temp_dir
         except subprocess.CalledProcessError as e:
             raise RuntimeError(f"Failed to clone repository: {e.stderr}")
+
+def ast_structural_evidence(path: str) -> Evidence:
+    """
+    Forensic AST scan for interim checklist:
+      - Does src/state.py use BaseModel?
+      - Does src/graph.py use StateGraph?
+    Returns rich Evidence for each finding.
+    """
+    findings = []
+    checklist = [
+        ("src/state.py", "BaseModel"),
+        ("src/graph.py", "StateGraph"),
+    ]
+    for file_path, symbol in checklist:
+        abs_path = os.path.join(path, file_path)
+        try:
+            with open(abs_path, "r") as f:
+                code = f.read()
+                tree = ast.parse(code, filename=abs_path)
+                found = any(
+                    (isinstance(node, ast.Name) and node.id == symbol) or
+                    (isinstance(node, ast.Attribute) and node.attr == symbol)
+                    for node in ast.walk(tree)
+                )
+                snippet = code if found else ""
+                now = datetime.utcnow().isoformat()
+                sig = hashlib.sha256((file_path + symbol + snippet).encode()).hexdigest()
+                findings.append(Evidence(
+                    rationale=f"Checked for {symbol} in {file_path}.",
+                    source_file=file_path,
+                    raw_snippet=snippet[:200],
+                    confidence_score=1.0 if found else 0.0,
+                    verification_method="AST-Analysis",
+                    raw_output=snippet[:200],
+                    analysis_timestamp=now,
+                    forensic_signature=sig
+                ))
+        except Exception as e:
+            now = datetime.utcnow().isoformat()
+            sig = hashlib.sha256((file_path + str(e)).encode()).hexdigest()
+            findings.append(Evidence(
+                rationale=f"Error parsing {file_path}: {e}",
+                source_file=file_path,
+                raw_snippet="",
+                confidence_score=0.0,
+                verification_method="AST-Analysis",
+                raw_output=str(e),
+                analysis_timestamp=now,
+                forensic_signature=sig
+            ))
+    return findings
 
 def analyze_graph_structure(path: str) -> Dict[str, List[str]]:
     """

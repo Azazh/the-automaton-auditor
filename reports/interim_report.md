@@ -60,12 +60,26 @@ To prevent "Security Negligence," all repository interactions are sandboxed usin
 graph TD
     A[Parallel Detectives] -->|Fan-Out| B[RepoInvestigator]
     A -->|Fan-Out| C[DocAnalyst]
+    A -->|Fan-Out| G[VisionInspector]
     B -->|Evidence| D[EvidenceAggregator]
     C -->|Evidence| D
+    G -->|Evidence| D
     D -->|Validated Evidence| E[Judicial Layer]
     A -->|Error Handling| F[ErrorNode]
     B -->|Error Handling| F
     C -->|Error Handling| F
+    G -->|Error Handling| F
+    %% Judicial Layer Parallelism
+    E -->|Fan-Out| J[Prosecutor]
+    E -->|Fan-Out| K[Defense]
+    E -->|Fan-Out| L[Tech Lead]
+    J -->|Opinion| M[Chief Justice]
+    K -->|Opinion| M
+    L -->|Opinion| M
+    M -->|Final Verdict| N[END]
+    J -->|Failure| F
+    K -->|Failure| F
+    L -->|Failure| F
 ```
 
 ---
@@ -74,40 +88,40 @@ graph TD
 
 ### Dialectical Bench
 
-The Judicial Layer will consist of three distinct personas:
+The Judicial Layer now consists of three distinct personas executed in parallel:
 - **Prosecutor**: Identifies flaws and risks in the evidence.
 - **Defense**: Advocates for the validity and strengths of the evidence.
 - **Tech Lead**: Balances the arguments, ensuring alignment with engineering governance.
 
 #### Implementation Plan
 1. **Prosecutor Node**:
-   - Develop logic to identify and flag potential flaws in evidence.
-   - Integrate with the EvidenceAggregator to receive input.
+   - Logic flags missing forensic signatures or low confidence.
+   - Failure mode: If critical evidence is unverifiable, returns a low score and triggers error handling.
 2. **Defense Node**:
-   - Implement logic to validate and strengthen evidence arguments.
-   - Ensure compatibility with the Prosecutor Node for dialectical scoring.
+   - Rewards high-confidence, well-justified evidence.
+   - Failure mode: If justification is weak, returns a moderate score and can trigger error handling.
 3. **Tech Lead Node**:
-   - Create a balancing mechanism to resolve conflicts between the Prosecutor and Defense nodes.
-   - Align outputs with the Chief Justice Node.
+   - Checks for recency and completeness of evidence.
+   - Failure mode: Missing timestamps or incomplete evidence triggers error handling.
 
 ### Chief Justice Synthesis Node
 
-The Chief Justice Node will implement deterministic rules, such as:
+The Chief Justice Node implements deterministic rules:
 - **Rule of Security**: Any detected security flaw caps the score at 2.
-- **Rule of Completeness**: Missing evidence results in automatic rejection.
+- **Rule of Completeness**: Missing or conflicting evidence results in automatic rejection.
+- **Consensus Rule**: If all judges agree and no failures, the average score is used.
 
 #### Implementation Plan
-1. Define deterministic rules as Python functions.
-2. Integrate rules with the outputs of the Dialectical Bench.
-3. Test the Chief Justice Node with various evidence scenarios to ensure robustness.
+1. Deterministic rules are implemented as Python functions.
+2. The Chief Justice node receives all judicial opinions in parallel and synthesizes the final verdict.
+3. Failure modes: If any judge returns a failure, the Chief Justice verdict is capped or rejected, and the error node is triggered.
 
 ---
 
 ## Known Gaps
 
 1. **VisionInspector Implementation Pending**: The VisionInspector node, responsible for image-based evidence analysis, is not yet integrated.
-2. **Judicial Layer in Progress**: The Dialectical Bench and Chief Justice Node are planned for the final submission.
-3. **End-to-End Testing**: Comprehensive integration tests are pending to validate the entire orchestration flow.
-4. **ErrorNode Enhancements**: Additional error-handling scenarios need to be implemented to cover edge cases.
+2. **End-to-End Testing**: Comprehensive integration tests are pending to validate the entire orchestration flow, including all failure modes.
+3. **ErrorNode Enhancements**: Additional error-handling scenarios need to be implemented to cover edge cases in both detective and judicial layers.
 
 ---

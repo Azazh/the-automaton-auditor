@@ -8,9 +8,45 @@
 
 The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digital Courtroom":
 
-- **Forensic Layer (Detectives)**: Parallel nodes (`RepoInvestigator`, `DocAnalyst`) gather structured evidence.
-- **Judicial Layer (Judges)**: Evaluates evidence with dialectic scoring and persona integrity.
-- **Synthesis Layer (Supreme Court)**: Resolves conflicts deterministically, ensuring governance compliance.
+- **Forensic Layer (Detectives)**: Parallel nodes (`RepoInvestigator`, `DocAnalyst`, `VisionInspector`) gather structured evidence.
+- **Judicial Layer (Judges)**: Prosecutor, Defense, and Tech Lead evaluate evidence in parallel with dialectic scoring and persona integrity.
+- **Synthesis Layer (Supreme Court)**: Chief Justice node resolves conflicts deterministically, ensuring governance compliance.
+
+---
+
+## 🔄 Orchestration Flow
+
+> **Digital Courtroom Execution**: All layers operate in parallel where possible, with explicit fan-out and fan-in patterns for both detectives and judges. Failure modes are handled at each stage for robust governance.
+
+```mermaid
+graph TD
+    A[Parallel Detectives] -->|Fan-Out| B[RepoInvestigator]
+    A -->|Fan-Out| C[DocAnalyst]
+    A -->|Fan-Out| G[VisionInspector]
+    B -->|Evidence| D[EvidenceAggregator]
+    C -->|Evidence| D
+    G -->|Evidence| D
+    D -->|Validated Evidence| E[Judicial Layer]
+    A -->|Error Handling| F[ErrorNode]
+    B -->|Error Handling| F
+    C -->|Error Handling| F
+    G -->|Error Handling| F
+    %% Judicial Layer Parallelism
+    E -->|Fan-Out| J[Prosecutor]
+    E -->|Fan-Out| K[Defense]
+    E -->|Fan-Out| L[Tech Lead]
+    J -->|Opinion| M[Chief Justice]
+    K -->|Opinion| M
+    L -->|Opinion| M
+    M -->|Final Verdict| N[END]
+    J -->|Failure| F
+    K -->|Failure| F
+    L -->|Failure| F
+```
+
+- **Parallel Fan-Out**: Detectives and Judges operate concurrently for maximum coverage and dialectical rigor.
+- **Fan-In Aggregation**: Evidence and opinions are aggregated and synthesized deterministically.
+- **Failure Modes**: Any node can trigger error handling, ensuring robust and transparent governance.
 
 ---
 
@@ -29,6 +65,7 @@ The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digit
 ### Parallel Detectives
 - **RepoInvestigator**: Analyzes repository structure and git history.
 - **DocAnalyst**: Extracts and validates evidence from PDF documents.
+- **VisionInspector**: (Planned) Will analyze image-based evidence for completeness.
 
 ### Forensic Tools
 - **Sandboxed Git Cloning**: Ensures secure repository interactions.
@@ -78,6 +115,41 @@ The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digit
 ### Enhanced Interim Report
 - Added detailed trade-off analyses for architectural decisions.
 - Expanded the roadmap with granular implementation details.
-- Updated orchestration flow to include error handling.
+- Refined orchestration diagram to show full parallelism and failure modes in both detective and judicial layers.
 
 ---
+
+## 🐳 Docker & Compose
+
+### Build and Run with Docker
+
+1. Build the image:
+   ```bash
+   docker build -t automaton-auditor .
+   ```
+2. Run the container:
+   ```bash
+   docker run --env REPO_URL=<repo_url> --env PDF_PATH=<pdf_path> automaton-auditor
+   ```
+
+### Orchestrate with Docker Compose
+
+1. Set up your .env file with REPO_URL and PDF_PATH.
+2. Launch the stack:
+   ```bash
+   docker-compose up --build
+   ```
+
+- **Volumes**: Audit and rubric directories are mounted for persistence and peer review.
+- **Environment**: All critical variables are injected for reproducible audits.
+- **Restart Policy**: Containers restart unless stopped for reliability.
+
+---
+
+## 🚦 Production Readiness
+
+- **Pydantic Reducers**: All state transitions use Pydantic models and Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates.
+- **AST-Based Verification**: The repo tools provide irrefutable structural evidence by parsing the AST for critical constructs (e.g., BaseModel in src/state.py, StateGraph in src/graph.py), ensuring forensic compliance.
+- **Strict Dependency Locking**: requirements.txt (strictly versioned) and uv are used for deterministic environments. Poetry is not required.
+- **CI/CD & Containerization**: Automated CI pipeline, Dockerfile, and Compose orchestration ensure reproducibility and auditability.
+- **Parallel Orchestration**: All detective and judicial nodes are executed in parallel, with explicit fan-out/fan-in patterns and robust error handling.
