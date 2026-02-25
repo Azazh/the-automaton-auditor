@@ -10,3 +10,6 @@ wheels/
 .venv
 .env
 venv/
+
+# Ignore environment files
+.env
