@@ -53,6 +53,13 @@ def ast_structural_evidence(path: str) -> Evidence:
         ("src/state.py", "BaseModel"),
         ("src/graph.py", "StateGraph"),
     ]
+    # Additional checks for inheritance and function calls
+    inheritance_checks = [
+        ("src/state.py", "BaseModel"),
+    ]
+    function_call_checks = [
+        ("src/state.py", ["operator.add", "operator.ior"]),
+    ]
     for file_path, symbol in checklist:
         abs_path = os.path.join(path, file_path)
         try:
@@ -81,11 +88,119 @@ def ast_structural_evidence(path: str) -> Evidence:
             now = datetime.utcnow().isoformat()
             sig = hashlib.sha256((file_path + str(e)).encode()).hexdigest()
             findings.append(Evidence(
-                rationale=f"Error parsing {file_path}: {e}",
+                rationale=f"Error parsing {file_path}: {type(e).__name__}: {e}",
                 source_file=file_path,
                 raw_snippet="",
                 confidence_score=0.0,
                 verification_method="AST-Analysis",
+                raw_output=str(e),
+                analysis_timestamp=now,
+                forensic_signature=sig
+            ))
+    # Inheritance checks
+    for file_path, base_class in inheritance_checks:
+        abs_path = os.path.join(path, file_path)
+        try:
+            with open(abs_path, "r") as f:
+                code = f.read()
+                tree = ast.parse(code, filename=abs_path)
+                found = False
+                for node in ast.walk(tree):
+                    if isinstance(node, ast.ClassDef):
+                        for base in node.bases:
+                            if (isinstance(base, ast.Name) and base.id == base_class) or \
+                               (isinstance(base, ast.Attribute) and base.attr == base_class):
+                                found = True
+                                snippet = code[node.lineno-1:node.end_lineno] if hasattr(node, 'end_lineno') else code
+                                now = datetime.utcnow().isoformat()
+                                sig = hashlib.sha256((file_path + base_class + str(node.lineno)).encode()).hexdigest()
+                                findings.append(Evidence(
+                                    rationale=f"Class inherits from {base_class} in {file_path} at line {node.lineno}.",
+                                    source_file=file_path,
+                                    raw_snippet=snippet[:200],
+                                    confidence_score=1.0,
+                                    verification_method="AST-Inheritance-Check",
+                                    raw_output=snippet[:200],
+                                    analysis_timestamp=now,
+                                    forensic_signature=sig
+                                ))
+                if not found:
+                    now = datetime.utcnow().isoformat()
+                    sig = hashlib.sha256((file_path + base_class + "notfound").encode()).hexdigest()
+                    findings.append(Evidence(
+                        rationale=f"No class inherits from {base_class} in {file_path}.",
+                        source_file=file_path,
+                        raw_snippet="",
+                        confidence_score=0.0,
+                        verification_method="AST-Inheritance-Check",
+                        raw_output="",
+                        analysis_timestamp=now,
+                        forensic_signature=sig
+                    ))
+        except Exception as e:
+            now = datetime.utcnow().isoformat()
+            sig = hashlib.sha256((file_path + str(e)).encode()).hexdigest()
+            findings.append(Evidence(
+                rationale=f"Error parsing {file_path} for inheritance: {type(e).__name__}: {e}",
+                source_file=file_path,
+                raw_snippet="",
+                confidence_score=0.0,
+                verification_method="AST-Inheritance-Check",
+                raw_output=str(e),
+                analysis_timestamp=now,
+                forensic_signature=sig
+            ))
+    # Function call checks
+    for file_path, call_list in function_call_checks:
+        abs_path = os.path.join(path, file_path)
+        try:
+            with open(abs_path, "r") as f:
+                code = f.read()
+                tree = ast.parse(code, filename=abs_path)
+                for call in call_list:
+                    found = False
+                    for node in ast.walk(tree):
+                        if isinstance(node, ast.Call):
+                            func = node.func
+                            if isinstance(func, ast.Attribute):
+                                full_name = f"{getattr(func.value, 'id', '')}.{func.attr}"
+                                if full_name == call:
+                                    found = True
+                                    snippet = code[node.lineno-1:node.end_lineno] if hasattr(node, 'end_lineno') else code
+                                    now = datetime.utcnow().isoformat()
+                                    sig = hashlib.sha256((file_path + call + str(node.lineno)).encode()).hexdigest()
+                                    findings.append(Evidence(
+                                        rationale=f"Function call {call} found in {file_path} at line {node.lineno}.",
+                                        source_file=file_path,
+                                        raw_snippet=snippet[:200],
+                                        confidence_score=1.0,
+                                        verification_method="AST-Call-Check",
+                                        raw_output=snippet[:200],
+                                        analysis_timestamp=now,
+                                        forensic_signature=sig
+                                    ))
+                    if not found:
+                        now = datetime.utcnow().isoformat()
+                        sig = hashlib.sha256((file_path + call + "notfound").encode()).hexdigest()
+                        findings.append(Evidence(
+                            rationale=f"Function call {call} not found in {file_path}.",
+                            source_file=file_path,
+                            raw_snippet="",
+                            confidence_score=0.0,
+                            verification_method="AST-Call-Check",
+                            raw_output="",
+                            analysis_timestamp=now,
+                            forensic_signature=sig
+                        ))
+        except Exception as e:
+            now = datetime.utcnow().isoformat()
+            sig = hashlib.sha256((file_path + str(e)).encode()).hexdigest()
+            findings.append(Evidence(
+                rationale=f"Error parsing {file_path} for calls: {type(e).__name__}: {e}",
+                source_file=file_path,
+                raw_snippet="",
+                confidence_score=0.0,
+                verification_method="AST-Call-Check",
                 raw_output=str(e),
                 analysis_timestamp=now,
                 forensic_signature=sig
