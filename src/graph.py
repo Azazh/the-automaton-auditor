@@ -2,6 +2,8 @@ from langgraph import StateGraph
 from src.state import AgentState
 from src.nodes.detectives import RepoInvestigator, DocAnalyst, VisionInspector
 from langgraph.nodes import Node
+from src.nodes.judges import Prosecutor, Defense, TechLead
+from src.nodes.justice import ChiefJustice
 
 class EvidenceAggregator(Node):
     async def run(self, evidences: dict) -> dict:
@@ -53,7 +55,18 @@ vision_inspector = VisionInspector()
 evidence_aggregator = EvidenceAggregator()
 error_node = ErrorNode()
 
+# Judicial Layer nodes
+prosecutor = Prosecutor()
+defense = Defense()
+tech_lead = TechLead()
+chief_justice = ChiefJustice()
+
 # Define graph wiring
 graph.add_fan_out("START", [repo_investigator, doc_analyst, vision_inspector])
 graph.add_fan_in([repo_investigator, doc_analyst, vision_inspector], evidence_aggregator)
-graph.add_edge(evidence_aggregator, error_node)
+
+# Fan-out to all judges in parallel after aggregation
+graph.add_fan_out(evidence_aggregator, [prosecutor, defense, tech_lead])
+graph.add_fan_in([prosecutor, defense, tech_lead], chief_justice)
+
+graph.add_edge(chief_justice, error_node)

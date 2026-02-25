@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  automaton-auditor:
+    build: .
+    container_name: automaton-auditor
+    environment:
+      - LANGCHAIN_TRACING_V2=false
+      - REPO_URL=${REPO_URL}
+      - PDF_PATH=${PDF_PATH}
+    volumes:
+      - ./audit:/app/audit
+      - ./rubric:/app/rubric
+      - ./src:/app/src
+      - ./README.md:/app/README.md
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./poetry.lock:/app/poetry.lock
+      - ./.env:/app/.env
+    command: poetry run audit-self
+    restart: unless-stopped
