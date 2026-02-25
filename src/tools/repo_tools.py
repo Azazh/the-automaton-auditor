@@ -10,7 +10,7 @@ import tempfile
 import subprocess
 import os
 import ast
-from typing import List
+from typing import List, Dict
 
 def clone_repo(repo_url: str, branch: str = "main") -> str:
     """
@@ -38,7 +38,7 @@ def clone_repo(repo_url: str, branch: str = "main") -> str:
         except subprocess.CalledProcessError as e:
             raise RuntimeError(f"Failed to clone repository: {e.stderr}")
 
-def analyze_graph_structure(path: str) -> bool:
+def analyze_graph_structure(path: str) -> Dict[str, List[str]]:
     """
     Analyze the Python files in the given path to verify StateGraph wiring.
 
@@ -46,8 +46,10 @@ def analyze_graph_structure(path: str) -> bool:
         path (str): The directory path to analyze.
 
     Returns:
-        bool: True if the StateGraph is correctly wired, False otherwise.
+        Dict[str, List[str]]: A mapping of node names to their connected edges.
     """
+    graph_structure = {}
+
     for root, _, files in os.walk(path):
         for file in files:
             if file.endswith(".py"):
@@ -56,12 +58,14 @@ def analyze_graph_structure(path: str) -> bool:
                     try:
                         tree = ast.parse(f.read(), filename=file_path)
                         for node in ast.walk(tree):
-                            if isinstance(node, ast.Call) and hasattr(node.func, "attr"):
-                                if node.func.attr == "add_edge":
-                                    return True
-                    except SyntaxError:
-                        continue
-    return False
+                            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                                if node.func.attr in {"add_fan_out", "add_fan_in", "add_edge"}:
+                                    args = [arg.s for arg in node.args if isinstance(arg, ast.Constant)]
+                                    graph_structure[node.func.attr] = graph_structure.get(node.func.attr, []) + args
+                    except Exception as e:
+                        print(f"Error parsing {file_path}: {e}")
+
+    return graph_structure
 
 def extract_git_narrative(repo_path: str) -> List[str]:
     """

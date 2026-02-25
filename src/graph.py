@@ -1,6 +1,6 @@
 from langgraph import StateGraph
 from src.state import AgentState
-from src.nodes.detectives import RepoInvestigator, DocAnalyst
+from src.nodes.detectives import RepoInvestigator, DocAnalyst, VisionInspector
 from langgraph.nodes import Node
 
 class EvidenceAggregator(Node):
@@ -14,7 +14,7 @@ class EvidenceAggregator(Node):
         Returns:
             dict: The aggregated evidence dictionary.
         """
-        required_keys = {"graph_structure", "git_narrative", "pdf_analysis"}
+        required_keys = {"graph_structure", "git_narrative", "pdf_analysis", "image_analysis"}
         missing_keys = required_keys - evidences.keys()
 
         if missing_keys:
@@ -49,13 +49,11 @@ graph = StateGraph(AgentState)
 # Define nodes
 repo_investigator = RepoInvestigator()
 doc_analyst = DocAnalyst()
+vision_inspector = VisionInspector()
 evidence_aggregator = EvidenceAggregator()
 error_node = ErrorNode()
 
 # Define graph wiring
-graph.entry_point = repo_investigator
-repo_investigator >> evidence_aggregator
-repo_investigator >> error_node.condition(lambda state: not state.get("repo_url"))
-doc_analyst >> evidence_aggregator
-
-graph.end_state = evidence_aggregator  # Stub for now; JudicialBench will be added later.
+graph.add_fan_out("START", [repo_investigator, doc_analyst, vision_inspector])
+graph.add_fan_in([repo_investigator, doc_analyst, vision_inspector], evidence_aggregator)
+graph.add_edge(evidence_aggregator, error_node)
