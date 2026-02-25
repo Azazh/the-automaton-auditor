@@ -1,7 +1,18 @@
-[project]
-name = "the-automaton-auditor"
+[tool.poetry]
+name = "automaton-auditor"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = []
+description = "Automaton Auditor: A LangGraph-based system for auditing workflows with forensic accuracy and judicial rigor."
+authors = ["Azazh Wuletawu <azazhwuletaw@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+langgraph = "*"
+langchain = "*"
+pydantic = "*"
+docling = "*"
+python-dotenv = "*"
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
