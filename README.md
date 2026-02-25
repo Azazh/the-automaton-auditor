@@ -1,19 +1,44 @@
-# Automaton Auditor
+# ⚖️ The Automaton Auditor: Autonomous Governance Swarm
 
-## Overview
-The Automaton Auditor is a LangGraph-based system designed to audit workflows with forensic accuracy and judicial rigor. This interim submission focuses on the Detective Layer and StateGraph orchestration.
+> **Mission Statement**: The Automaton Auditor shifts the paradigm from code generation to code governance, ensuring forensic accuracy, judicial rigor, and autonomous compliance in software workflows.
 
-## Architecture
+---
 
-### Diagram
-```
-Parallel Detectives -> Evidence Aggregator -> END
-```
-- **Parallel Detectives**: The `RepoInvestigator` and `DocAnalyst` nodes run concurrently to collect evidence.
-- **Evidence Aggregator**: Aggregates and validates evidence from the detectives.
-- **END**: Placeholder for the JudicialBench (to be implemented in the final submission).
+## 🏛️ Architecture: The Digital Courtroom
 
-## Installation
+The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digital Courtroom":
+
+- **Forensic Layer (Detectives)**: Parallel nodes (`RepoInvestigator`, `DocAnalyst`) gather structured evidence.
+- **Judicial Layer (Judges)**: Evaluates evidence with dialectic scoring and persona integrity.
+- **Synthesis Layer (Supreme Court)**: Resolves conflicts deterministically, ensuring governance compliance.
+
+---
+
+## 🛠️ Core Tech Stack
+
+| Technology   | Purpose                                      |
+|--------------|---------------------------------------------|
+| **LangGraph**| Orchestrates parallel workflows             |
+| **Pydantic** | Enforces state rigor and validation         |
+| **AST**      | Enables structural forensic analysis        |
+
+---
+
+## 🚀 Interim Features
+
+### Parallel Detectives
+- **RepoInvestigator**: Analyzes repository structure and git history.
+- **DocAnalyst**: Extracts and validates evidence from PDF documents.
+
+### Forensic Tools
+- **Sandboxed Git Cloning**: Ensures secure repository interactions.
+- **AST-Based Graph Verification**: Validates structural integrity of workflows.
+
+---
+
+## ⚙️ Setup & Usage
+
+### Installation
 
 1. Install dependencies:
    ```bash
@@ -26,11 +51,24 @@ Parallel Detectives -> Evidence Aggregator -> END
    # Fill in REPO_URL and PDF_PATH
    ```
 
-## Running the Audit
+### Running the Audit
 
-1. Execute the interim audit:
+1. Execute the audit against a target repository:
    ```bash
-   python src/main.py
+   python src/main.py --url <repo_url>
    ```
 
-2. Ensure `LANGCHAIN_TRACING_V2` is set to `true` for observability (optional).
+2. (Optional) Enable observability:
+   ```bash
+   export LANGCHAIN_TRACING_V2=true
+   ```
+
+---
+
+## 📜 Project Governance
+
+> **Commit Standards**: This project adheres to [Conventional Commits](https://www.conventionalcommits.org/).
+
+> **Forensic Git History**: Every commit is traceable, ensuring accountability and transparency.
+
+---
