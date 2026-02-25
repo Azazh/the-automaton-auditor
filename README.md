@@ -58,7 +58,7 @@ graph TD
 | **Pydantic** | Enforces state rigor and validation         |
 | **AST**      | Enables structural forensic analysis        |
 
----
+---git 
 
 ## 🚀 Interim Features
 
@@ -149,7 +149,29 @@ graph TD
 ## 🚦 Production Readiness
 
 - **Pydantic Reducers**: All state transitions use Pydantic models and Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates.
-- **AST-Based Verification**: The repo tools provide irrefutable structural evidence by parsing the AST for critical constructs (e.g., BaseModel in src/state.py, StateGraph in src/graph.py), ensuring forensic compliance.
+- **AST-Based Verification**: The repo tools provide irrefutable structural evidence by parsing the AST for critical constructs (e.g., BaseModel in src/state.py, StateGraph in src/graph.py), ensuring forensic compliance. Inheritance and function call checks are now explicit and errors are granular.
+- **PDF RAG Interface**: PDF evidence is chunked and queryable for RAG-style retrieval, supporting granular document audits.
+- **Git Forensics**: Commit history extraction now provides granular error messages for missing repos, permissions, and empty histories.
 - **Strict Dependency Locking**: requirements.txt (strictly versioned) and uv are used for deterministic environments. Poetry is not required.
 - **CI/CD & Containerization**: Automated CI pipeline, Dockerfile, and Compose orchestration ensure reproducibility and auditability.
-- **Parallel Orchestration**: All detective and judicial nodes are executed in parallel, with explicit fan-out/fan-in patterns and robust error handling.
+- **Parallel Orchestration**: All detective and judicial nodes are executed in parallel, with explicit fan-out/fan-in patterns and robust error handling. Conditional error routing is implemented for detector-specific failures and aggregation errors.
+
+---
+
+## 🧪 End-to-End Run Example
+
+1. **Install dependencies**: `uv sync`
+2. **Set up environment**: `cp .env.example .env` and fill in required variables.
+3. **Run the audit**: `python src/main.py --url <repo_url>`
+4. **Observe output**: The system will:
+   - Run all detectives in parallel (repo, PDF, vision)
+   - Aggregate evidence, route errors if any detective fails
+   - Fan-out to all judges in parallel
+   - Synthesize a final verdict via the Chief Justice
+   - Route any aggregation or judge failure to the error node
+5. **Review logs and reports**: All evidence, errors, and verdicts are logged for peer review.
+
+**Failure Handling:**
+- If any detective fails (e.g., missing repo, PDF, or image), error routing is triggered and the error node is activated.
+- If aggregation detects missing or invalid evidence, the error node is triggered before judicial review.
+- All error paths are explicit and testable, ensuring robust governance.
