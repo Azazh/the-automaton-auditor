@@ -4,6 +4,10 @@ version = "0.1.0"
 description = "Automaton Auditor: A LangGraph-based system for auditing workflows with forensic accuracy and judicial rigor."
 authors = ["Azazh Wuletawu <azazhwuletaw@gmail.com>"]
 
+packages = [
+    { include = "src" }
+]
+
 [tool.poetry.dependencies]
 python = "^3.9"
 langgraph = "*"
