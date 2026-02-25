@@ -4,8 +4,10 @@ import operator
 
 class Evidence(BaseModel):
     rationale: str = Field(description="Explanation of why this evidence is relevant.")
-    confidence: float = Field(ge=0.0, le=1.0, description="Confidence level of the evidence, between 0 and 1.")
-    source: str = Field(description="Source of the evidence, e.g., file name or URL.")
+    source_file: str = Field(description="The specific file path where the evidence was found.")
+    raw_snippet: str = Field(description="The actual code or text excerpt extracted as evidence.")
+    confidence_score: float = Field(ge=0.0, le=1.0, description="Confidence score for this evidence, between 0 and 1.")
+    verification_method: str = Field(description="The method used to verify this evidence, e.g., 'AST-Analysis', 'Docling-Parsing', 'Git-Log'.")
     raw_output: str = Field(description="The un-parsed tool result for further analysis.")
     analysis_timestamp: str = Field(description="Timestamp when the evidence was analyzed.")
     forensic_signature: str = Field(description="A unique hash or identifier for the artifact.")
@@ -26,4 +28,5 @@ class AuditReport(BaseModel):
 
 class AgentState(TypedDict):
     evidences: Annotated[Dict[str, Evidence], operator.ior]
+    logs: Annotated[List[str], operator.add]
     opinions: Annotated[List[JudicialOpinion], operator.add]

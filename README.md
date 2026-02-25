@@ -143,3 +143,13 @@ graph TD
 - **Volumes**: Audit and rubric directories are mounted for persistence and peer review.
 - **Environment**: All critical variables are injected for reproducible audits.
 - **Restart Policy**: Containers restart unless stopped for reliability.
+
+---
+
+## 🚦 Production Readiness
+
+- **Pydantic Reducers**: All state transitions use Pydantic models and Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates.
+- **AST-Based Verification**: The repo tools provide irrefutable structural evidence by parsing the AST for critical constructs (e.g., BaseModel in src/state.py, StateGraph in src/graph.py), ensuring forensic compliance.
+- **Strict Dependency Locking**: requirements.txt (strictly versioned) and uv are used for deterministic environments. Poetry is not required.
+- **CI/CD & Containerization**: Automated CI pipeline, Dockerfile, and Compose orchestration ensure reproducibility and auditability.
+- **Parallel Orchestration**: All detective and judicial nodes are executed in parallel, with explicit fan-out/fan-in patterns and robust error handling.

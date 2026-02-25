@@ -17,24 +17,18 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: |
-          pip install poetry
-      - name: Install dependencies
-        run: |
-          poetry install
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies (strict lock)
+        run: uv pip install -r requirements.txt
       - name: Run Black (code style)
-        run: |
-          poetry run black --check src/ tests/
+        run: uv pip run black --check src/ tests/
       - name: Run isort (import order)
-        run: |
-          poetry run isort --check-only src/ tests/
+        run: uv pip run isort --check-only src/ tests/
       - name: Run mypy (type checking)
-        run: |
-          poetry run mypy src/
+        run: uv pip run mypy src/
       - name: Run Pytest (unit & integration tests)
-        run: |
-          poetry run pytest
+        run: uv pip run pytest
 
   judicial-integrity:
     name: Judicial Integrity & Governance
@@ -47,20 +41,16 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: |
-          pip install poetry
-      - name: Install dependencies
-        run: |
-          poetry install
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies (strict lock)
+        run: uv pip install -r requirements.txt
       - name: Validate Conventional Commits
         uses: webiny/action-conventional-commits@v1.2.0
       - name: Check for .env.example
-        run: |
-          test -f .env.example
-      - name: Check for pyproject.toml and poetry.lock
-        run: |
-          test -f pyproject.toml && test -f poetry.lock
+        run: test -f .env.example
+      - name: Check for pyproject.toml, poetry.lock, requirements.txt
+        run: test -f pyproject.toml && test -f poetry.lock && test -f requirements.txt
 
   elite-tier:
     name: Elite Tier Checks
@@ -73,15 +63,11 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: |
-          pip install poetry
-      - name: Install dependencies
-        run: |
-          poetry install
+      - name: Install uv
+        run: pip install uv
+      - name: Install dependencies (strict lock)
+        run: uv pip install -r requirements.txt
       - name: LangSmith Integration (stub)
-        run: |
-          echo "LangSmith integration would run here."
+        run: echo "LangSmith integration would run here."
       - name: Git Narrative Validation (stub)
-        run: |
-          echo "Git narrative validation would run here."
+        run: echo "Git narrative validation would run here."

@@ -1,0 +1,9 @@
+langgraph
+langchain==0.1.0
+pydantic==2.7.4
+docling==2.75.0
+python-dotenv==1.0.1
+pytest==8.0.0
+black==24.2.0
+isort==5.13.2
+mypy==1.8.0
