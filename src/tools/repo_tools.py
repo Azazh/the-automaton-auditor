@@ -46,9 +46,10 @@ def analyze_graph_structure(path: str) -> Dict[str, List[str]]:
         path (str): The directory path to analyze.
 
     Returns:
-        Dict[str, List[str]]: A dictionary mapping node names to their connected edges.
+        Dict[str, List[str]]: A mapping of node names to their connected edges.
     """
     graph_structure = {}
+
     for root, _, files in os.walk(path):
         for file in files:
             if file.endswith(".py"):
@@ -57,15 +58,13 @@ def analyze_graph_structure(path: str) -> Dict[str, List[str]]:
                     try:
                         tree = ast.parse(f.read(), filename=file_path)
                         for node in ast.walk(tree):
-                            if isinstance(node, ast.Call) and hasattr(node.func, "attr"):
-                                if node.func.attr == "add_edge":
-                                    source = node.args[0].id if hasattr(node.args[0], "id") else "unknown"
-                                    target = node.args[1].id if hasattr(node.args[1], "id") else "unknown"
-                                    if source not in graph_structure:
-                                        graph_structure[source] = []
-                                    graph_structure[source].append(target)
-                    except SyntaxError:
-                        continue
+                            if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
+                                if node.func.attr in {"add_fan_out", "add_fan_in", "add_edge"}:
+                                    args = [arg.s for arg in node.args if isinstance(arg, ast.Constant)]
+                                    graph_structure[node.func.attr] = graph_structure.get(node.func.attr, []) + args
+                    except Exception as e:
+                        print(f"Error parsing {file_path}: {e}")
+
     return graph_structure
 
 def extract_git_narrative(repo_path: str) -> List[str]:

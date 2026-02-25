@@ -24,9 +24,3 @@ audit-self = "src.main:main"
 black = "*"
 isort = "*"
 mypy = "*"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "*"
-
-[tool.poetry.scripts]
-install = "uv sync"

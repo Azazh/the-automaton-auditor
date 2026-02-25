@@ -6,9 +6,9 @@ class Evidence(BaseModel):
     rationale: str = Field(description="Explanation of why this evidence is relevant.")
     confidence: float = Field(ge=0.0, le=1.0, description="Confidence level of the evidence, between 0 and 1.")
     source: str = Field(description="Source of the evidence, e.g., file name or URL.")
-    raw_output: str = Field(description="The un-parsed tool result.")
-    analysis_timestamp: str = Field(description="Timestamp of when the evidence was analyzed.")
-    forensic_signature: str = Field(description="A hash or unique identifier for the artifact.")
+    raw_output: str = Field(description="The un-parsed tool result for further analysis.")
+    analysis_timestamp: str = Field(description="Timestamp when the evidence was analyzed.")
+    forensic_signature: str = Field(description="A unique hash or identifier for the artifact.")
 
 class JudicialOpinion(BaseModel):
     judge: str = Field(description="Identifier for the judge issuing the opinion.")

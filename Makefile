@@ -1,5 +1,5 @@
 install:
-	uv sync
+	poetry install
 
 audit-self:
-	python src/main.py --url <repo_url>
+	poetry run audit-self

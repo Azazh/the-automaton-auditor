@@ -54,10 +54,6 @@ evidence_aggregator = EvidenceAggregator()
 error_node = ErrorNode()
 
 # Define graph wiring
-graph.entry_point = Node.fan_out([repo_investigator, doc_analyst, vision_inspector])
-repo_investigator >> evidence_aggregator
-doc_analyst >> evidence_aggregator
-vision_inspector >> evidence_aggregator
-repo_investigator >> error_node.condition(lambda state: not state.get("repo_url"))
-
-graph.end_state = evidence_aggregator  # Stub for now; JudicialBench will be added later.
+graph.add_fan_out("START", [repo_investigator, doc_analyst, vision_inspector])
+graph.add_fan_in([repo_investigator, doc_analyst, vision_inspector], evidence_aggregator)
+graph.add_edge(evidence_aggregator, error_node)
