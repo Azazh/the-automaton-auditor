@@ -13,12 +13,12 @@ class LogicAggregator(Node):
         """
         required_keys = {"graph_structure", "git_narrative", "pdf_analysis", "image_analysis"}
         missing_keys = required_keys - evidences.keys()
-        error_keys = [k for k in evidences if k.startswith("error") or (isinstance(evidences[k], dict) and evidences[k].get("confidence", 1.0) == 0.0)]
+        error_keys = [k for k in evidences if k.startswith("error") or (isinstance(evidences[k], dict) and evidences[k].get("confidence_score", 1.0) == 0.0)]
         if missing_keys or error_keys:
             evidences["aggregation_error"] = {
                 "rationale": f"Missing keys: {missing_keys}. Error keys: {error_keys}",
-                "confidence": 0.0,
-                "source": "LogicAggregator"
+                "confidence_score": 0.0,
+                "source_file": "LogicAggregator"
             }
         return evidences
 
@@ -26,8 +26,8 @@ class ErrorNode(Node):
     async def run(self, state: dict) -> dict:
         state["error"] = {
             "rationale": "Invalid input detected.",
-            "confidence": 0.0,
-            "source": "ErrorNode"
+            "confidence_score": 0.0,
+            "source_file": "ErrorNode"
         }
         return state
 

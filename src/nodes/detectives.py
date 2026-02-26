@@ -30,8 +30,8 @@ class RepoInvestigator(Node):
             graph_hash = hashlib.sha256(raw_graph.encode()).hexdigest()
             evidences["graph_structure"] = Evidence(
                 rationale="Verified StateGraph wiring.",
-                confidence=1.0 if graph_valid else 0.5,
-                source="AST analysis",
+                confidence_score=1.0 if graph_valid else 0.5,
+                source_file="AST analysis",
                 raw_output=raw_graph,
                 analysis_timestamp=now,
                 forensic_signature=graph_hash
@@ -42,8 +42,8 @@ class RepoInvestigator(Node):
             git_hash = hashlib.sha256(raw_git.encode()).hexdigest()
             evidences["git_narrative"] = Evidence(
                 rationale="Extracted git commit history.",
-                confidence=1.0,
-                source="Git log",
+                confidence_score=1.0,
+                source_file="Git log",
                 raw_output=raw_git,
                 analysis_timestamp=now,
                 forensic_signature=git_hash
@@ -54,8 +54,8 @@ class RepoInvestigator(Node):
             err_hash = hashlib.sha256(err_raw.encode()).hexdigest()
             evidences["error"] = Evidence(
                 rationale=f"Failed to investigate repo: {str(e)}",
-                confidence=0.0,
-                source="RepoInvestigator",
+                confidence_score=0.0,
+                source_file="RepoInvestigator",
                 raw_output=err_raw,
                 analysis_timestamp=now,
                 forensic_signature=err_hash
@@ -83,8 +83,8 @@ class DocAnalyst(Node):
             pdf_hash = hashlib.sha256(raw_pdf.encode()).hexdigest()
             evidences["pdf_analysis"] = Evidence(
                 rationale=f"Queried PDF for '{query}'. Found {len(results)} relevant sections.",
-                confidence=1.0 if results else 0.5,
-                source="PDF analysis",
+                confidence_score=1.0 if results else 0.5,
+                source_file="PDF analysis",
                 raw_output=raw_pdf,
                 analysis_timestamp=now,
                 forensic_signature=pdf_hash
@@ -95,8 +95,8 @@ class DocAnalyst(Node):
             err_hash = hashlib.sha256(err_raw.encode()).hexdigest()
             evidences["error"] = Evidence(
                 rationale=f"Failed to analyze PDF: {str(e)}",
-                confidence=0.0,
-                source="DocAnalyst",
+                confidence_score=0.0,
+                source_file="DocAnalyst",
                 raw_output=err_raw,
                 analysis_timestamp=now,
                 forensic_signature=err_hash
