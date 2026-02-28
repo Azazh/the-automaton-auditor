@@ -19,11 +19,12 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
         repo_path = repo_tools.clone_repo(repo_url, branch)
         print(f"[RepoInvestigator] Repo cloned to: {repo_path}")
         for task in tasks:
-            goal = task.get("name")
+            criterion_id = task.get("id")
+            goal = criterion_id  # Use rubric criterion_id for evidence.goal for correct matching
             instruction = task.get("forensic_instruction")
             evidence_result = None
             print(f"[RepoInvestigator] Task: {goal}")
-            if task["id"] == "git_forensic_analysis":
+            if criterion_id == "git_forensic_analysis":
                 git_commits = repo_tools.extract_git_history(repo_path)
                 evidence_result = Evidence(
                     goal=goal,
@@ -33,8 +34,8 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
                     rationale=instruction,
                     confidence=1.0 if len(git_commits) > 3 else 0.5
                 )
-                evidences["git_history"] = [evidence_result]
-            elif task["id"] == "state_management_rigor":
+                evidences[criterion_id] = [evidence_result]
+            elif criterion_id == "state_management_rigor":
                 state_py = os.path.join(repo_path, "src", "state.py")
                 snippets = repo_tools.find_pydantic_and_typed_dicts(state_py) if os.path.exists(state_py) else []
                 evidence_result = Evidence(
@@ -45,8 +46,8 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
                     rationale=instruction,
                     confidence=1.0 if snippets else 0.0
                 )
-                evidences["state_management"] = [evidence_result]
-            elif task["id"] == "graph_orchestration":
+                evidences[criterion_id] = [evidence_result]
+            elif criterion_id == "graph_orchestration":
                 graph_struct = repo_tools.analyze_graph_structure(repo_path)
                 evidence_result = Evidence(
                     goal=goal,
@@ -56,8 +57,8 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
                     rationale=instruction,
                     confidence=1.0 if graph_struct.get("parallel_fan_out") and graph_struct.get("fan_in") else 0.5
                 )
-                evidences["graph_orchestration"] = [evidence_result]
-            elif task["id"] == "safe_tool_engineering":
+                evidences[criterion_id] = [evidence_result]
+            elif criterion_id == "safe_tool_engineering":
                 evidence_result = Evidence(
                     goal=goal,
                     found=True,
@@ -66,7 +67,7 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
                     rationale=instruction,
                     confidence=1.0
                 )
-                evidences["safe_tooling"] = [evidence_result]
+                evidences[criterion_id] = [evidence_result]
             if evidence_result is not None:
                 print(f"[RepoInvestigator] Evidence: {evidence_result}")
         state["evidences"].update(evidences)

@@ -4,10 +4,10 @@ from dotenv import load_dotenv
 
 from src.graph import compiled_graph
 from src.state import AgentState
+load_dotenv()
 
 
 async def main():
-    load_dotenv()
 
     tracing_enabled = os.getenv("LANGCHAIN_TRACING_V2", "false").lower() == "true"
     if tracing_enabled:

@@ -4,7 +4,8 @@ from typing import Dict, Any, List
 from dotenv import load_dotenv
 from pydantic import ValidationError
 from src.state import JudicialOpinion, Evidence
-
+from src.utils.llm_provider import LLMProvider
+import json as _json
 # Load rubric for persona prompts
 def load_rubric():
     rubric_path = os.path.join(os.path.dirname(__file__), '../../rubric/week2_rubric.json')
@@ -35,19 +36,39 @@ def get_judge_tasks():
 
 # Helper: get evidence for a criterion
 def get_evidence(state, criterion_id):
-    return [ev for evs in state.get("evidences", {}).values() for ev in evs if hasattr(ev, "goal") and criterion_id in ev.goal]
+    """
+    Collect evidence objects for a given criterion_id.
+    Handles cases where 'goal' is a string or a list.
+    Adds debug output to help trace evidence matching.
+    """
+    evidences = state.get("evidences", {})
+    found = []
+    for evs in evidences.values():
+        for ev in evs:
+            goal = getattr(ev, "goal", None)
+            if goal is None:
+                continue
+            # goal can be a string or a list
+            if isinstance(goal, str) and criterion_id in goal:
+                found.append(ev)
+            elif isinstance(goal, list) and criterion_id in goal:
+                found.append(ev)
+    if not found:
+        print(f"[Judge][DEBUG] No evidence found for criterion '{criterion_id}'. Available evidence goals: {[getattr(ev, 'goal', None) for evs in evidences.values() for ev in evs]}")
+    else:
+        print(f"[Judge][DEBUG] Found {len(found)} evidence(s) for criterion '{criterion_id}': {[getattr(ev, 'location', None) for ev in found]}")
+    return found
 
 async def judge_node(state: Dict[str, Any], persona: str, prompt: str) -> Dict[str, Any]:
     """
     Generic judge node. Uses .with_structured_output() or .bind_tools() to enforce output schema.
     Retries if output is not valid JudicialOpinion.
     """
-    from src.utils.llm_provider import LLMProvider
-    import json as _json
+
     print(f"[{persona}] Judge node starting.")
     opinions = state.get("opinions", [])
     tasks = get_judge_tasks()
-    llm = LLMProvider(provider="groq")
+    llm = LLMProvider(provider="groq") 
     for task in tasks:
         criterion_id = task["id"]
         evidence = get_evidence(state, criterion_id)
