@@ -1,30 +1,20 @@
-[tool.poetry]
-name = "automaton-auditor"
+# Minimal pyproject.toml for uv
+[project]
+name = "the-automaton-auditor"
 version = "0.1.0"
-description = "Automaton Auditor: A LangGraph-based system for auditing workflows with forensic accuracy and judicial rigor."
-authors = ["Azazh Wuletawu <azazhwuletaw@gmail.com>"]
-
-packages = [
-    { include = "src" }
+description = "Digital Courtroom Auditor for Week 2 Challenge"
+authors = [
+	{ name = "azazh-wuletawu" }
 ]
-
-[tool.poetry.dependencies]
-python = "^3.9"
-langgraph = "*"
-langchain = "*"
-pydantic = "*"
-docling = "*"
-python-dotenv = "*"
-pytest = "*"
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-audit-self = "src.main:main"
-
-[tool.poetry.dev-dependencies]
-black = "*"
-isort = "*"
-mypy = "*"
+requires-python = ">=3.10"
+dependencies = [
+    "docling>=2.75.0",
+    "google-genai>=1.65.0",
+    "langchain>=1.2.10",
+    "langgraph>=1.0.10",
+    "pydantic>=2.12.5",
+    "pytest>=9.0.2",
+    "python-dotenv>=1.2.1",
+    "tree-sitter>=0.25.2",
+    "typing-extensions>=4.15.0",
+]
