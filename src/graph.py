@@ -1,66 +1,66 @@
-from langgraph import StateGraph
+from langgraph.graph import StateGraph, END
 from src.state import AgentState
-from src.nodes.detectives import RepoInvestigator, DocAnalyst, VisionInspector
-from langgraph.nodes import Node
-from src.nodes.judges import Prosecutor, Defense, TechLead
-from src.nodes.justice import ChiefJustice
+from src.nodes.detectives import repo_investigator, doc_analyst, vision_inspector, evidence_aggregator
+from src.nodes.judges import prosecutor, defense, tech_lead
+from src.nodes.justice import chief_justice
 
-class LogicAggregator(Node):
-    async def run(self, evidences: dict) -> dict:
-        """
-        Aggregate and validate completeness of evidence from all parallel detectives.
-        Returns error if any required evidence is missing or if any error is present in detective outputs.
-        """
-        required_keys = {"graph_structure", "git_narrative", "pdf_analysis", "image_analysis"}
-        missing_keys = required_keys - evidences.keys()
-        error_keys = [k for k in evidences if k.startswith("error") or (isinstance(evidences[k], dict) and evidences[k].get("confidence_score", 1.0) == 0.0)]
-        if missing_keys or error_keys:
-            evidences["aggregation_error"] = {
-                "rationale": f"Missing keys: {missing_keys}. Error keys: {error_keys}",
-                "confidence_score": 0.0,
-                "source_file": "LogicAggregator"
-            }
-        return evidences
+def build_graph():
+    """
+    Build and compile the Automaton Auditor orchestration graph.
+    Architecture:
+      - Layer 1: Parallel Detective Fan-Out (repo_investigator, doc_analyst, vision_inspector)
+      - Evidence Aggregation (evidence_aggregator)
+      - Layer 2: Parallel Judicial Fan-Out (prosecutor, defense, tech_lead)
+      - Synthesis (chief_justice)
+      - END: Final report output
+    """
+    graph = StateGraph(AgentState)
 
-class ErrorNode(Node):
-    async def run(self, state: dict) -> dict:
-        state["error"] = {
-            "rationale": "Invalid input detected.",
-            "confidence_score": 0.0,
-            "source_file": "ErrorNode"
-        }
-        return state
+    # Explicit START node for parallel fan-out
+    graph.add_node("START", lambda state: state)
+    graph.set_entry_point("START")
 
-# Initialize the StateGraph
-graph = StateGraph(AgentState)
+    # Layer 1: Detectives (parallel)
+    graph.add_node("repo_investigator", repo_investigator)
+    graph.add_node("doc_analyst", doc_analyst)
+    graph.add_node("vision_inspector", vision_inspector)
 
-# Define nodes
-repo_investigator = RepoInvestigator()
-doc_analyst = DocAnalyst()
-vision_inspector = VisionInspector()
-logic_aggregator = LogicAggregator()
-error_node = ErrorNode()
+    # Evidence Aggregator (fan-in)
+    graph.add_node("evidence_aggregator", evidence_aggregator)
 
-# Judicial Layer nodes
-prosecutor = Prosecutor()
-defense = Defense()
-tech_lead = TechLead()
-chief_justice = ChiefJustice()
+    # Layer 2: Judges (parallel)
+    graph.add_node("prosecutor", prosecutor)
+    graph.add_node("defense", defense)
+    graph.add_node("tech_lead", tech_lead)
 
-# Define graph wiring with conditional/error routing
-fan_out_detectives = [repo_investigator, doc_analyst, vision_inspector]
-graph.add_fan_out("START", fan_out_detectives)
-graph.add_fan_in(fan_out_detectives, logic_aggregator)
+    # Synthesis (Chief Justice)
+    graph.add_node("chief_justice", chief_justice)
 
-# Conditional error routing for each detective
-for detective in fan_out_detectives:
-    graph.add_edge(detective, error_node, condition=lambda evidences: "error" in evidences)
+    # Edges: START → Detectives (parallel)
+    graph.add_edge("START", "repo_investigator")
+    graph.add_edge("START", "doc_analyst")
+    graph.add_edge("START", "vision_inspector")
 
-# Fan-out to all judges in parallel after aggregation
-graph.add_fan_out(logic_aggregator, [prosecutor, defense, tech_lead])
-graph.add_fan_in([prosecutor, defense, tech_lead], chief_justice)
+    # Detectives → Evidence Aggregator (fan-in)
+    graph.add_edge("repo_investigator", "evidence_aggregator")
+    graph.add_edge("doc_analyst", "evidence_aggregator")
+    graph.add_edge("vision_inspector", "evidence_aggregator")
 
-# Route aggregation errors to error node
-graph.add_edge(logic_aggregator, error_node, condition=lambda evidences: "aggregation_error" in evidences)
+    # Evidence Aggregator → Judges (parallel)
+    graph.add_edge("evidence_aggregator", "prosecutor")
+    graph.add_edge("evidence_aggregator", "defense")
+    graph.add_edge("evidence_aggregator", "tech_lead")
 
-graph.add_edge(chief_justice, error_node)
+    # Judges → Chief Justice (fan-in)
+    graph.add_edge("prosecutor", "chief_justice")
+    graph.add_edge("defense", "chief_justice")
+    graph.add_edge("tech_lead", "chief_justice")
+
+    # Chief Justice → END
+    graph.add_edge("chief_justice", END)
+
+    print("Graph architecture: Detectives (parallel) → Evidence Aggregator (fan-in) → Judges (parallel) → Chief Justice (synthesis) → END")
+    return graph.compile()
+
+# Export compiled graph for main.py
+compiled_graph = build_graph()

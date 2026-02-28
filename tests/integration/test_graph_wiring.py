@@ -1,9 +1,8 @@
 from src.graph import graph
 
 def test_graph_start_fan_out():
-    nodes = graph.nodes
-    start_edges = graph.edges.get("START", [])
-    node_names = [n.__class__.__name__ for n in start_edges]
-    assert "RepoInvestigator" in node_names
-    assert "DocAnalyst" in node_names
-    assert len(node_names) >= 2
+    # graph.edges is a set of (start, end) tuples in langgraph 0.0.40
+    start_edges = [end for (start, end) in graph.edges if start == "START"]
+    assert "repo_investigator" in start_edges
+    assert "doc_analyst" in start_edges
+    assert len(start_edges) >= 2

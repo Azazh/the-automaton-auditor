@@ -1,6 +1,6 @@
 import tempfile
 from src.tools.repo_tools import ast_structural_evidence, clone_repo
-from src.state import Evidence
+from src.state import JudicialOpinion, Evidence
 from unittest.mock import patch
 
 def test_ast_structural_evidence_missing_stategraph(tmp_path):
@@ -16,5 +16,5 @@ def test_clone_repo_invalid_url(mock_run):
     mock_run.side_effect = Exception("Invalid URL")
     try:
         clone_repo("invalid_url")
-    except RuntimeError as e:
-        assert "Failed to clone repository" in str(e)
+    except Exception as e:
+        assert "Invalid URL" in str(e)

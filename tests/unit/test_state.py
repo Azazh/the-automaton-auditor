@@ -1,5 +1,5 @@
 import operator
-from src.state import Evidence, AgentState
+from src.state import JudicialOpinion, Evidence, AgentState
 
 def test_operator_ior_merges_evidence_dicts():
     dict1 = {"a": Evidence(rationale="A", source_file="file1.py", raw_snippet="", confidence_score=1.0, verification_method="AST-Analysis", raw_output="", analysis_timestamp="", forensic_signature="")}
