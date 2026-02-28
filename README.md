@@ -87,19 +87,6 @@ graph TD
 
 ---git 
 
-## 🚀 Interim Features
-
-### Parallel Detectives
-- **RepoInvestigator**: Analyzes repository structure and git history.
-- **DocAnalyst**: Extracts and validates evidence from PDF documents.
-- **VisionInspector**: (Planned) Will analyze image-based evidence for completeness.
-
-### Forensic Tools
-- **Sandboxed Git Cloning**: Ensures secure repository interactions.
-- **AST-Based Graph Verification**: Validates structural integrity of workflows.
-
----
-
 ## ⚙️ Setup & Usage
 
 ### Installation
@@ -161,15 +148,6 @@ graph TD
 
 ---
 
-## 🌟 Recent Enhancements
-
-### Enhanced Interim Report
-- Added detailed trade-off analyses for architectural decisions.
-- Expanded the roadmap with granular implementation details.
-- Refined orchestration diagram to show full parallelism and failure modes in both detective and judicial layers.
-
----
-
 ## 🐳 Docker & Compose
 
 ### Build and Run with Docker
@@ -197,17 +175,6 @@ graph TD
 
 ---
 
-## 🚦 Production Readiness
-
-- **Pydantic Reducers & Parallel Safety**: All state transitions use Pydantic models and Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates. In parallel branches, each node returns only the keys it changes (e.g., `{ "evidences": ... }`), and aggregator nodes return `{}`. This prevents merge conflicts and ensures correct evidence/opinion aggregation.
-- **AST-Based Verification**: The repo tools provide irrefutable structural evidence by parsing the AST for critical constructs (e.g., BaseModel in src/state.py, StateGraph in src/graph.py), ensuring forensic compliance. Inheritance and function call checks are now explicit and errors are granular.
-- **PDF RAG Interface**: PDF evidence is chunked and queryable for RAG-style retrieval, supporting granular document audits.
-- **Git Forensics**: Commit history extraction now provides granular error messages for missing repos, permissions, and empty histories.
-- **Strict Dependency Locking**: requirements.txt (strictly versioned) and uv are used for deterministic environments. Poetry is not required.
-- **CI/CD & Containerization**: Automated CI pipeline, Dockerfile, and Compose orchestration ensure reproducibility and auditability.
-- **Parallel Orchestration**: All detective and judicial nodes are executed in parallel, with explicit fan-out/fan-in patterns and robust error handling. Conditional error routing is implemented for detector-specific failures and aggregation errors.
-
----
 
 ## 🧪 End-to-End Run Example
 
