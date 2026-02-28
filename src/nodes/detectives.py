@@ -242,6 +242,5 @@ async def evidence_aggregator(state: Dict[str, Any]) -> Dict[str, Any]:
     EvidenceAggregator: Aggregates all evidence from detectives. (No-op/pass-through)
     """
     print("[EvidenceAggregator] Aggregating evidence from detectives.")
-    if "evidences" not in state or not isinstance(state["evidences"], dict):
-        state["evidences"] = {}
-    return state
+    # Do not return the full state to avoid parallel merge conflicts
+    return {}
