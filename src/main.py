@@ -1,4 +1,5 @@
 import os
+import argparse
 import asyncio
 from dotenv import load_dotenv
 
@@ -13,8 +14,25 @@ async def main():
     if tracing_enabled:
         print("🔎 LangSmith tracing is enabled.")
 
-    repo_url = os.getenv("REPO_URL")
-    pdf_path = os.getenv("PDF_PATH")
+
+
+    print("Which repo do you want to audit?")
+    print("1. Self (your own repo)")
+    print("2. Peer (your assigned peer's repo)")
+    choice = input("Enter 1 for self or 2 for peer [1/2]: ").strip()
+    if choice == '2':
+        target = 'peer'
+    else:
+        target = 'self'
+
+    print(f"[main] Target set to: {target}")
+
+    if target == 'peer':
+        repo_url = os.getenv("PEER_REPO_URL")
+        pdf_path = os.getenv("PEER_PDF_PATH")
+    else:
+        repo_url = os.getenv("REPO_URL")
+        pdf_path = os.getenv("PDF_PATH")
     
     # Load rubric from file if exists
     rubric_dimensions = []
@@ -25,11 +43,13 @@ async def main():
             rubric_data = json.load(f)
             rubric_dimensions = rubric_data.get("dimensions", [])
 
+
+    print(f"[env] TARGET: {target}")
     print(f"[env] REPO_URL: {repo_url}")
     print(f"[env] PDF_PATH: {pdf_path}")
 
     if not repo_url:
-        raise ValueError("❌ REPO_URL must be provided in .env")
+        raise ValueError("❌ REPO_URL (or PEER_REPO_URL) must be provided in .env")
 
     # Construct state
     initial_state = {

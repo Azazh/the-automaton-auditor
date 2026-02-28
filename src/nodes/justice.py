@@ -99,8 +99,12 @@ async def chief_justice(state: Dict[str, Any]) -> Dict[str, Any]:
         criteria=criteria_results,
         remediation_plan=remediation_plan
     )
-    # Write Markdown report to file
-    output_dir = os.path.join(os.path.dirname(__file__), '../../audit/report_onself_generated')
+    # Write Markdown report to correct location (self or peer)
+    peer_repo_url = os.environ.get("PEER_REPO_URL")
+    if peer_repo_url and report.repo_url.strip().lower() == peer_repo_url.strip().lower():
+        output_dir = os.path.join(os.path.dirname(__file__), '../../audit/report_onpeer_generated')
+    else:
+        output_dir = os.path.join(os.path.dirname(__file__), '../../audit/report_onself_generated')
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, 'audit_report.md')
     with open(output_path, 'w') as f:

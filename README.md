@@ -6,7 +6,12 @@
 
 ## 🏛️ Architecture: The Digital Courtroom
 
-The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digital Courtroom":
+
+The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digital Courtroom". The orchestration is strictly production-grade, with:
+
+- **Explicit END Layer**: The StateGraph always terminates at an explicit END node, ensuring a clean, deterministic pipeline finish and proper report generation.
+- **Parallel-Safe State Updates**: All nodes in parallel fan-in/fan-out (detectives, judges) return only the keys they change (not the full state), preventing merge conflicts and ensuring safe aggregation.
+- **Pydantic + Annotated Reducers**: State fields updated in parallel (e.g., evidences, opinions) use Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates.
 
 - **Forensic Layer (Detectives)**: Parallel nodes (`RepoInvestigator`, `DocAnalyst`, `VisionInspector`) gather structured evidence.
 - **Judicial Layer (Judges)**: Prosecutor, Defense, and Tech Lead evaluate evidence in parallel with dialectic scoring and persona integrity.
@@ -20,32 +25,54 @@ The Automaton Auditor employs a **Hierarchical State Graph** modeled as a "Digit
 
 ```mermaid
 graph TD
-    A[Parallel Detectives] -->|Fan-Out| B[RepoInvestigator]
-    A -->|Fan-Out| C[DocAnalyst]
-    A -->|Fan-Out| G[VisionInspector]
-    B -->|Evidence| D[EvidenceAggregator]
-    C -->|Evidence| D
-    G -->|Evidence| D
-    D -->|Validated Evidence| E[Judicial Layer]
-    A -->|Error Handling| F[ErrorNode]
-    B -->|Error Handling| F
-    C -->|Error Handling| F
-    G -->|Error Handling| F
-    %% Judicial Layer Parallelism
-    E -->|Fan-Out| J[Prosecutor]
-    E -->|Fan-Out| K[Defense]
-    E -->|Fan-Out| L[Tech Lead]
-    J -->|Opinion| M[Chief Justice]
-    K -->|Opinion| M
-    L -->|Opinion| M
-    M -->|Final Verdict| N[END]
-    J -->|Failure| F
-    K -->|Failure| F
-    L -->|Failure| F
+   subgraph "Layer 1: The Detective Layer (Parallel)"
+      A[START] --> B{Parallel Fan-Out}
+      B --> C[RepoInvestigator<br/>Node]
+      B --> D[DocAnalyst<br/>Node]
+      B --> G[VisionInspector<br/>Node]
+   end
+
+   subgraph "Error Handling"
+      C -->|Error| F[ErrorNode]
+      D -->|Error| F
+      G -->|Error| F
+      J -->|Failure| F
+      K -->|Failure| F
+      L -->|Failure| F
+   end
+
+   subgraph "Synchronization"
+      C -->|Evidence| E{EvidenceAggregator<br/>Fan-In Node}
+      D -->|Evidence| E
+      G -->|Evidence| E
+   end
+
+   subgraph "Layer 2: The Judicial Layer (Parallel)"
+      E -->|Validated Evidence| H{Judicial Fan-Out}
+      H --> J[Prosecutor]
+      H --> K[Defense]
+      H --> L[Tech Lead]
+   end
+
+   subgraph "Synthesis"
+      J -->|Opinion| M[Chief Justice<br/>Synthesis Node]
+      K -->|Opinion| M
+      L -->|Opinion| M
+      M -->|Final Verdict| N[END]
+   end
+
+   style A fill:#f9f,stroke:#333,stroke-width:2px
+   style E fill:#ccf,stroke:#333,stroke-width:2px
+   style C fill:#9f9,stroke:#333,stroke-width:2px
+   style D fill:#9f9,stroke:#333,stroke-width:2px
+   style G fill:#9f9,stroke:#333,stroke-width:2px
+   style F fill:#f99,stroke:#333,stroke-width:2px
+   style M fill:#fc3,stroke:#333,stroke-width:2px
 ```
 
 - **Parallel Fan-Out**: Detectives and Judges operate concurrently for maximum coverage and dialectical rigor.
-- **Fan-In Aggregation**: Evidence and opinions are aggregated and synthesized deterministically.
+- **Fan-In Aggregation**: Evidence and opinions are aggregated and synthesized deterministically. Aggregator nodes (like EvidenceAggregator) return an empty dict `{}` to avoid merge conflicts.
+- **Explicit END Layer**: The Chief Justice node always routes to an END node, guaranteeing the pipeline terminates and the audit report is written.
 - **Failure Modes**: Any node can trigger error handling, ensuring robust and transparent governance.
 
 ---
@@ -79,10 +106,15 @@ graph TD
 
 1. Install dependencies:
    ```bash
-   uv sync
+   make install
    ```
 
-2. Set up environment variables:
+2. (Optional) Create a virtual environment:
+   ```bash
+   make venv
+   ```
+
+3. Set up environment variables:
    ```bash
    cp .env.example .env
    # Fill in REPO_URL and PDF_PATH
@@ -90,15 +122,34 @@ graph TD
 
 ### Running the Audit
 
-1. Execute the audit against a target repository:
+1. Run the Digital Courtroom:
    ```bash
-   python src/main.py --url <repo_url>
+   make run
    ```
 
 2. (Optional) Enable observability:
    ```bash
    export LANGCHAIN_TRACING_V2=true
    ```
+
+### Testing & Quality
+
+- Run all tests:
+  ```bash
+  make test
+  ```
+- Lint the code:
+  ```bash
+  make lint
+  ```
+- Format the code:
+  ```bash
+  make format
+  ```
+- Type check:
+  ```bash
+  make typecheck
+  ```
 
 ---
 
@@ -148,7 +199,7 @@ graph TD
 
 ## 🚦 Production Readiness
 
-- **Pydantic Reducers**: All state transitions use Pydantic models and Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates.
+- **Pydantic Reducers & Parallel Safety**: All state transitions use Pydantic models and Annotated reducers (operator.ior for dicts, operator.add for lists) to guarantee deterministic, parallel-safe state updates. In parallel branches, each node returns only the keys it changes (e.g., `{ "evidences": ... }`), and aggregator nodes return `{}`. This prevents merge conflicts and ensures correct evidence/opinion aggregation.
 - **AST-Based Verification**: The repo tools provide irrefutable structural evidence by parsing the AST for critical constructs (e.g., BaseModel in src/state.py, StateGraph in src/graph.py), ensuring forensic compliance. Inheritance and function call checks are now explicit and errors are granular.
 - **PDF RAG Interface**: PDF evidence is chunked and queryable for RAG-style retrieval, supporting granular document audits.
 - **Git Forensics**: Commit history extraction now provides granular error messages for missing repos, permissions, and empty histories.
@@ -160,18 +211,24 @@ graph TD
 
 ## 🧪 End-to-End Run Example
 
-1. **Install dependencies**: `uv sync`
-2. **Set up environment**: `cp .env.example .env` and fill in required variables.
-3. **Run the audit**: `python src/main.py --url <repo_url>`
-4. **Observe output**: The system will:
-   - Run all detectives in parallel (repo, PDF, vision)
-   - Aggregate evidence, route errors if any detective fails
-   - Fan-out to all judges in parallel
-   - Synthesize a final verdict via the Chief Justice
-   - Route any aggregation or judge failure to the error node
-5. **Review logs and reports**: All evidence, errors, and verdicts are logged for peer review.
+---
 
-**Failure Handling:**
-- If any detective fails (e.g., missing repo, PDF, or image), error routing is triggered and the error node is activated.
-- If aggregation detects missing or invalid evidence, the error node is triggered before judicial review.
-- All error paths are explicit and testable, ensuring robust governance.
+**Note:**
+For all audit reports (self, peer, and peer-generated), include the above architectural diagram (Mermaid JS) to clearly communicate the orchestration and error handling structure.
+
+1. **Install dependencies**:
+   ```bash
+   make install
+   ```
+2. **Set up environment**:
+   ```bash
+   cp .env.example .env
+   # Fill in REPO_URL and PDF_PATH
+   ```
+3. **Run the audit**:
+   ```bash
+   make run
+   ```
+4. **Review output**:
+   - The system will run all detectives and judges in parallel, aggregate evidence, synthesize a final verdict, and write a Markdown audit report to the audit/ directory.
+   - All error handling and routing is automatic and explicit per the orchestration graph.
