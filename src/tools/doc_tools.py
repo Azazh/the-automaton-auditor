@@ -1,46 +1,49 @@
-# Guidelines for doc_tools.py
-
-# 1. Use the Docling Python package for PDF parsing and chunking.
-# 2. Implement a query interface to extract specific sections (e.g., "Dialectical Synthesis").
-# 3. Ensure the tool handles large PDF files efficiently by chunking the content.
-# 4. Cross-reference claims in the PDF with evidence collected by RepoInvestigator.
-# 5. Handle missing or malformed PDF files gracefully, returning structured error messages.
-
-from docling import PDFParser
 from typing import List, Dict
+from PyPDF2 import PdfReader
+import os
 
-def parse_pdf(file_path: str) -> Dict[str, str]:
+def parse_pdf(pdf_path: str) -> List[str]:
     """
-    Parse a PDF file and extract its content.
-
-    Args:
-        file_path (str): The path to the PDF file.
-
-    Returns:
-        Dict[str, str]: A dictionary where keys are section titles and values are the content.
-
-    Raises:
-        RuntimeError: If the PDF parsing fails.
+    Parse a PDF into a list of text sections (one per page).
     """
-    try:
-        parser = PDFParser(file_path)
-        return parser.extract_sections()
-    except Exception as e:
-        raise RuntimeError(f"Failed to parse PDF: {str(e)}")
+    print(f"[doc_tools] Parsing PDF: {pdf_path}")
+    if not os.path.exists(pdf_path):
+        print("[doc_tools][ERROR] PDF not found.")
+        raise FileNotFoundError(f"PDF not found: {pdf_path}")
+    reader = PdfReader(pdf_path)
+    sections = [page.extract_text() or "" for page in reader.pages]
+    print(f"[doc_tools] Extracted {len(sections)} pages.")
+    return sections
 
-def query_pdf_content(sections: Dict[str, str], query: str) -> List[str]:
+def chunk_sections(sections: List[str], chunk_size: int = 500) -> List[str]:
     """
-    Query specific sections of a PDF for relevant content.
-
-    Args:
-        sections (Dict[str, str]): The parsed sections of the PDF.
-        query (str): The query string to search for.
-
-    Returns:
-        List[str]: A list of matching content snippets.
+    Chunk PDF sections into smaller pieces for RAG-lite querying.
     """
+    print(f"[doc_tools] Chunking sections with chunk size: {chunk_size}")
+    chunks = []
+    for section in sections:
+        for i in range(0, len(section), chunk_size):
+            chunks.append(section[i:i+chunk_size])
+    print(f"[doc_tools] Created {len(chunks)} chunks.")
+    return chunks
+
+def query_pdf_content(sections: List[str], query: str) -> List[str]:
+    """
+    Simple keyword search for relevant sections in the PDF.
+    """
+    print(f"[doc_tools] Querying PDF for: {query}")
     results = []
-    for title, content in sections.items():
-        if query.lower() in content.lower():
-            results.append(f"{title}: {content}")
+    for section in sections:
+        if query.lower() in section.lower():
+            results.append(section)
+    print(f"[doc_tools] Found {len(results)} relevant sections.")
     return results
+
+def ingest_pdf(pdf_path: str, query: str) -> List[str]:
+    """
+    Ingest and query a PDF for specific content (RAG-lite).
+    """
+    print(f"[doc_tools] Ingesting PDF for query: {query}")
+    sections = parse_pdf(pdf_path)
+    chunks = chunk_sections(sections)
+    return query_pdf_content(chunks, query)
