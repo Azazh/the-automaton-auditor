@@ -1,3 +1,4 @@
+from typing import Dict, Any, List, Tuple
 import os
 import json
 from typing import Dict, Any, List
@@ -17,13 +18,16 @@ def get_remediation_for_criterion(criterion_id: str) -> str:
     return f"Review and improve code for criterion: {criterion_id}."
 
 def summarize_dissent(opinions: List[JudicialOpinion]) -> str:
-    # Summarize why Prosecutor and Defense disagreed
+    # Summarize why judges disagreed, referencing all arguments and cited evidence
     if not opinions or len(opinions) < 2:
         return ""
-    args = {op.judge: op.argument for op in opinions}
-    return f"Prosecutor: {args.get('Prosecutor', '')}\nDefense: {args.get('Defense', '')}"
+    summary = ["Dissent detected due to high score variance:"]
+    for op in opinions:
+        summary.append(f"- {op.judge}: Score {op.score}\n  Argument: {op.argument}\n  Cited Evidence: {', '.join(op.cited_evidence)}")
+    summary.append("This wide disagreement reflects conflicting interpretations of the evidence and rubric. See above for details.")
+    return "\n".join(summary)
 
-def apply_synthesis_rules(criterion_id, opinions: List[JudicialOpinion], evidences: Dict[str, Any]) -> (int, str):
+def apply_synthesis_rules(criterion_id, opinions: List[JudicialOpinion], evidences: Dict[str, Any]) -> Tuple[int, str]:
     # Rule 1: Security override
     if criterion_id == "safe_tool_engineering":
         for op in opinions:
@@ -76,8 +80,9 @@ async def chief_justice(state: Dict[str, Any]) -> Dict[str, Any]:
         relevant_ops = [op for op in opinions if op.criterion_id == criterion_id]
         if not relevant_ops:
             continue
-        var = compute_variance(relevant_ops)
-        dissent = summarize_dissent(relevant_ops) if var > 2 else None
+        scores = [op.score for op in relevant_ops]
+        score_variance = max(scores) - min(scores) if len(scores) > 1 else 0
+        dissent = summarize_dissent(relevant_ops) if score_variance > 2 else None
         final_score, rule_applied = apply_synthesis_rules(criterion_id, relevant_ops, evidences)
         total_score += final_score
         remediation = get_remediation_for_criterion(criterion_id)
