@@ -1,53 +1,107 @@
-from langgraph.nodes import Node
-from src.state import Evidence, JudicialOpinion
-from datetime import datetime
-from typing import Dict, Any
+import json
+import os
+from typing import Dict, Any, List
+from dotenv import load_dotenv
+from pydantic import ValidationError
+from src.state import JudicialOpinion, Evidence
 
-class Prosecutor(Node):
-    async def run(self, evidences: Dict[str, Evidence]) -> JudicialOpinion:
-        # Example: Penalize missing forensic_signature or low confidence
-        for key, ev in evidences.items():
-            if not ev.forensic_signature or ev.confidence < 0.5:
-                return JudicialOpinion(
-                    judge="Prosecutor",
-                    opinion=f"Evidence {key} is weak or unverifiable.",
-                    score=2
-                )
-        return JudicialOpinion(
-            judge="Prosecutor",
-            opinion="All evidence meets minimum prosecutorial standards.",
-            score=5
-        )
+# Load rubric for persona prompts
+def load_rubric():
+    rubric_path = os.path.join(os.path.dirname(__file__), '../../rubric/week2_rubric.json')
+    with open(rubric_path, 'r') as f:
+        return json.load(f)
 
-class Defense(Node):
-    async def run(self, evidences: Dict[str, Evidence]) -> JudicialOpinion:
-        # Example: Reward high confidence and rationale
-        for key, ev in evidences.items():
-            if ev.confidence > 0.8 and ev.rationale:
-                return JudicialOpinion(
-                    judge="Defense",
-                    opinion=f"Evidence {key} is robust and well-justified.",
-                    score=5
-                )
-        return JudicialOpinion(
-            judge="Defense",
-            opinion="Some evidence lacks strong justification.",
-            score=3
-        )
+RUBRIC = load_rubric()
+load_dotenv()
 
-class TechLead(Node):
-    async def run(self, evidences: Dict[str, Evidence]) -> JudicialOpinion:
-        # Example: Check for analysis_timestamp recency
-        now = datetime.utcnow().isoformat()
-        for key, ev in evidences.items():
-            if not ev.analysis_timestamp:
-                return JudicialOpinion(
-                    judge="TechLead",
-                    opinion=f"Evidence {key} missing analysis timestamp.",
-                    score=2
-                )
-        return JudicialOpinion(
-            judge="TechLead",
-            opinion="All evidence is recent and timestamped.",
-            score=5
+
+# Persona system prompts (distinct, per rubric)
+PROSECUTOR_PROMPT = (
+    "You are the Prosecutor. Your job is to find flaws, security gaps, and laziness. "
+    "Be adversarial. Cite specific evidence. Score strictly."
+)
+DEFENSE_PROMPT = (
+    "You are the Defense Attorney. Reward effort, intent, and creative workarounds. "
+    "Be forgiving, but cite evidence. Score generously if justified."
+)
+TECHLEAD_PROMPT = (
+    "You are the Tech Lead. Focus on architectural soundness, maintainability, and practical viability. "
+    "Be pragmatic. Cite evidence for your score."
+)
+
+# Helper: get rubric logic for each criterion
+def get_judge_tasks():
+    return [d for d in RUBRIC["dimensions"] if d["target_artifact"] == "github_repo"]
+
+# Helper: get evidence for a criterion
+def get_evidence(state, criterion_id):
+    return [ev for evs in state.get("evidences", {}).values() for ev in evs if hasattr(ev, "goal") and criterion_id in ev.goal]
+
+async def judge_node(state: Dict[str, Any], persona: str, prompt: str) -> Dict[str, Any]:
+    """
+    Generic judge node. Uses .with_structured_output() or .bind_tools() to enforce output schema.
+    Retries if output is not valid JudicialOpinion.
+    """
+    from src.utils.llm_provider import LLMProvider
+    import json as _json
+    print(f"[{persona}] Judge node starting.")
+    opinions = state.get("opinions", [])
+    tasks = get_judge_tasks()
+    llm = LLMProvider(provider="groq")
+    for task in tasks:
+        criterion_id = task["id"]
+        evidence = get_evidence(state, criterion_id)
+        evidence_str = "\n".join([
+            f"- {ev.location}: {ev.content}" for ev in evidence
+        ]) if evidence else "No evidence found."
+        user_prompt = (
+            f"You are the {persona} in a digital courtroom.\n"
+            f"Criterion: {criterion_id}\n"
+            f"Persona Instructions: {prompt}\n"
+            f"Evidence (with file paths):\n{evidence_str}\n"
+            "Return your verdict as a JSON object with keys: score (1-5 int), argument (str), cited_evidence (list of file paths you are citing, e.g. ['src/state.py', 'src/graph.py']).\n"
+            "Example JSON: {\"score\": 3, \"argument\": \"The state is well-typed but lacks reducers.\", \"cited_evidence\": [\"src/state.py\"]}"
         )
+        messages = [
+            {"role": "system", "content": "You are a helpful, precise, and honest digital judge. Always return valid JSON."},
+            {"role": "user", "content": user_prompt}
+        ]
+        for attempt in range(3):
+            try:
+                response = llm.chat(messages, temperature=0.2, max_tokens=512)
+                # Extract JSON from response
+                if '{' in response:
+                    start = response.index('{')
+                    end = response.rindex('}') + 1
+                    json_str = response[start:end]
+                    data = _json.loads(json_str)
+                else:
+                    raise ValueError("No JSON object in LLM response.")
+                opinion = JudicialOpinion(
+                    judge=persona,
+                    criterion_id=criterion_id,
+                    score=int(data.get("score", 1)),
+                    argument=data.get("argument", "No argument provided."),
+                    cited_evidence=data.get("cited_evidence", [])
+                )
+                opinion = JudicialOpinion.parse_obj(opinion.dict())
+                print(f"[{persona}] Output: {opinion}")
+                opinions.append(opinion)
+                break
+            except (ValidationError, Exception) as ve:
+                print(f"[{persona}] Output validation failed: {ve}. Retrying...")
+                continue
+        else:
+            print(f"[{persona}] Failed to produce valid output after retries.")
+    state["opinions"] = opinions
+    print(f"[{persona}] Judge node complete.")
+    return {"opinions": state["opinions"]}
+
+async def prosecutor(state: Dict[str, Any]) -> Dict[str, Any]:
+    return await judge_node(state, "Prosecutor", PROSECUTOR_PROMPT)
+
+async def defense(state: Dict[str, Any]) -> Dict[str, Any]:
+    return await judge_node(state, "Defense", DEFENSE_PROMPT)
+
+async def tech_lead(state: Dict[str, Any]) -> Dict[str, Any]:
+    return await judge_node(state, "TechLead", TECHLEAD_PROMPT)

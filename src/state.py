@@ -1,32 +1,46 @@
-from typing import TypedDict, List, Dict, Annotated
-from pydantic import BaseModel, Field
 import operator
+from typing import Annotated, Dict, List, Literal, Optional
+from pydantic import BaseModel, Field
+from typing_extensions import TypedDict
 
+# --- Detective Output ---
 class Evidence(BaseModel):
-    rationale: str = Field(description="Explanation of why this evidence is relevant.")
-    source_file: str = Field(description="The specific file path where the evidence was found.")
-    raw_snippet: str = Field(description="The actual code or text excerpt extracted as evidence.")
-    confidence_score: float = Field(ge=0.0, le=1.0, description="Confidence score for this evidence, between 0 and 1.")
-    verification_method: str = Field(description="The method used to verify this evidence, e.g., 'AST-Analysis', 'Docling-Parsing', 'Git-Log'.")
-    raw_output: str = Field(description="The un-parsed tool result for further analysis.")
-    analysis_timestamp: str = Field(description="Timestamp when the evidence was analyzed.")
-    forensic_signature: str = Field(description="A unique hash or identifier for the artifact.")
+    goal: str = Field()
+    found: bool = Field(description="Whether the artifact exists")
+    content: Optional[str] = Field(default=None)
+    location: str = Field(description="File path or commit hash")
+    rationale: str = Field(description="Your rationale for your confidence on the evidence you find for this particular goal")
+    confidence: float
 
+# --- Judge Output ---
 class JudicialOpinion(BaseModel):
-    judge: str = Field(description="Identifier for the judge issuing the opinion.")
-    opinion: str = Field(description="The opinion or decision issued by the judge.")
-    score: int = Field(ge=1, le=5, description="Score assigned by the judge, between 1 and 5.")
+    judge: Literal["Prosecutor", "Defense", "TechLead"]
+    criterion_id: str
+    score: int = Field(ge=1, le=5)
+    argument: str
+    cited_evidence: List[str]
 
+# --- Chief Justice Output ---
 class CriterionResult(BaseModel):
-    criterion: str = Field(description="The criterion being evaluated.")
-    result: bool = Field(description="Whether the criterion was met.")
-    details: str = Field(description="Additional details about the evaluation.")
+    dimension_id: str
+    dimension_name: str
+    final_score: int = Field(ge=1, le=5)
+    judge_opinions: List[JudicialOpinion]
+    dissent_summary: Optional[str] = Field(default=None, description="Required when score variance > 2")
+    remediation: str = Field(description="Specific file-level instructions for improvement")
 
 class AuditReport(BaseModel):
-    summary: str = Field(description="Summary of the audit findings.")
-    findings: List[CriterionResult] = Field(description="Detailed findings of the audit.")
+    repo_url: str
+    executive_summary: str
+    overall_score: float
+    criteria: List[CriterionResult]
+    remediation_plan: str
 
+# --- Graph State ---
 class AgentState(TypedDict):
-    evidences: Annotated[Dict[str, Evidence], operator.ior]
-    logs: Annotated[List[str], operator.add]
+    repo_url: str
+    pdf_path: str
+    rubric_dimensions: List[Dict]
+    evidences: Annotated[Dict[str, List[Evidence]], operator.ior]
     opinions: Annotated[List[JudicialOpinion], operator.add]
+    final_report: AuditReport
