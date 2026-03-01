@@ -1,339 +1,127 @@
-# Audit Report for https://github.com/Azazh/the-automaton-auditor.git
-
-## Executive Summary
-
-Final audit complete. Aggregate score: 1.71. See breakdown below.
-
-## Criterion Breakdown
-
-### Git Forensic Analysis (Score: 2)
-
-- **Defense:** No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made. (Score: 1)
-  - Cited Evidence: 
-
-**Dissent:** Dissent detected due to high score variance:
-- Defense: Score 4
-  Argument: No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security.
-  Cited Evidence: 
-- TechLead: Score 1
-  Argument: No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made.
-  Cited Evidence: 
-- Defense: Score 4
-  Argument: No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security.
-  Cited Evidence: 
-- TechLead: Score 1
-  Argument: No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made.
-  Cited Evidence: 
-- Defense: Score 4
-  Argument: No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security.
-  Cited Evidence: 
-- TechLead: Score 1
-  Argument: No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made.
-  Cited Evidence: 
-- Defense: Score 4
-  Argument: No evidence was found in the provided repository. The absence of any suspicious commits, files, or anomalies suggests that there is no indication of wrongdoing. While the lack of evidence does not prove innocence, it also does not support any claim of misconduct. Therefore, the defense can reasonably argue that the defendant acted with no malicious intent and should be given a generous score.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was found in the repository, indicating a severe lack of code, documentation, or commit history. This absence itself is a critical flaw, demonstrating negligence and a failure to maintain a proper codebase. Without any files to inspect, there is no basis for a more detailed forensic analysis, and the repository fails to meet basic standards for transparency and security.
-  Cited Evidence: 
-- TechLead: Score 1
-  Argument: No evidence was found to evaluate the git forensic analysis. Without repository history or relevant files, a meaningful assessment cannot be made.
-  Cited Evidence: 
-This wide disagreement reflects conflicting interpretations of the evidence and rubric. See above for details.
-
-**Remediation:** Review and improve code for criterion: git_forensic_analysis.
-
-### State Management Rigor (Score: 1)
-
-- **Defense:** No evidence of state management implementation was provided, making it impossible to evaluate rigor. The absence of code samples or documentation suggests limited rigor, but we acknowledge that effort may exist outside the provided evidence. Therefore, a cautious score of 2 is assigned. (Score: 2)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to demonstrate rigorous state management. Without concrete code or documentation, we cannot confirm adherence to best practices, and the absence of evidence suggests potential gaps or laziness in state handling. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to assess the rigor of state management. Without documentation or code samples, it is impossible to confirm whether the architecture follows best practices, maintains type safety, or supports maintainability. Therefore, the score reflects the lack of verifiable evidence. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence of state management implementation was provided, making it impossible to evaluate rigor. The absence of code samples or documentation suggests limited rigor, but we acknowledge that effort may exist outside the provided evidence. Therefore, a cautious score of 2 is assigned. (Score: 2)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to demonstrate rigorous state management. Without concrete code or documentation, we cannot confirm adherence to best practices, and the absence of evidence suggests potential gaps or laziness in state handling. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to assess the rigor of state management. Without documentation or code samples, it is impossible to confirm whether the architecture follows best practices, maintains type safety, or supports maintainability. Therefore, the score reflects the lack of verifiable evidence. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence of state management implementation was provided, making it impossible to evaluate rigor. The absence of code samples or documentation suggests limited rigor, but we acknowledge that effort may exist outside the provided evidence. Therefore, a cautious score of 2 is assigned. (Score: 2)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to demonstrate rigorous state management. Without concrete code or documentation, we cannot confirm adherence to best practices, and the absence of evidence suggests potential gaps or laziness in state handling. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to assess the rigor of state management. Without documentation or code samples, it is impossible to confirm whether the architecture follows best practices, maintains type safety, or supports maintainability. Therefore, the score reflects the lack of verifiable evidence. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence of state management implementation was provided, making it impossible to evaluate rigor. The absence of code samples or documentation suggests limited rigor, but we acknowledge that effort may exist outside the provided evidence. Therefore, a cautious score of 2 is assigned. (Score: 2)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to demonstrate rigorous state management. Without concrete code or documentation, we cannot confirm adherence to best practices, and the absence of evidence suggests potential gaps or laziness in state handling. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was found to assess the rigor of state management. Without documentation or code samples, it is impossible to confirm whether the architecture follows best practices, maintains type safety, or supports maintainability. Therefore, the score reflects the lack of verifiable evidence. (Score: 1)
-  - Cited Evidence: 
-
-**Remediation:** Review and improve code for criterion: state_management_rigor.
-
-### Graph Orchestration Architecture (Score: 2)
-
-- **Defense:** Based on the available information, the graph orchestration appears to have been attempted with some effort, but lacks clear evidence of full implementation or documentation. The defense acknowledges the intent and creative workarounds, but without concrete evidence, a moderate score is appropriate. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence files were provided for review, so I cannot identify any specific flaws, security gaps, or laziness in the graph orchestration. Without concrete code or documentation to analyze, I must score the submission as minimal due to lack of verifiable content. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the graph orchestration architecture, so a neutral score is assigned. Without concrete code or documentation, it is impossible to assess architectural soundness, maintainability, or practical viability. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** Based on the available information, the graph orchestration appears to have been attempted with some effort, but lacks clear evidence of full implementation or documentation. The defense acknowledges the intent and creative workarounds, but without concrete evidence, a moderate score is appropriate. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence files were provided for review, so I cannot identify any specific flaws, security gaps, or laziness in the graph orchestration. Without concrete code or documentation to analyze, I must score the submission as minimal due to lack of verifiable content. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the graph orchestration architecture, so a neutral score is assigned. Without concrete code or documentation, it is impossible to assess architectural soundness, maintainability, or practical viability. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** Based on the available information, the graph orchestration appears to have been attempted with some effort, but lacks clear evidence of full implementation or documentation. The defense acknowledges the intent and creative workarounds, but without concrete evidence, a moderate score is appropriate. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence files were provided for review, so I cannot identify any specific flaws, security gaps, or laziness in the graph orchestration. Without concrete code or documentation to analyze, I must score the submission as minimal due to lack of verifiable content. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the graph orchestration architecture, so a neutral score is assigned. Without concrete code or documentation, it is impossible to assess architectural soundness, maintainability, or practical viability. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** Based on the available information, the graph orchestration appears to have been attempted with some effort, but lacks clear evidence of full implementation or documentation. The defense acknowledges the intent and creative workarounds, but without concrete evidence, a moderate score is appropriate. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence files were provided for review, so I cannot identify any specific flaws, security gaps, or laziness in the graph orchestration. Without concrete code or documentation to analyze, I must score the submission as minimal due to lack of verifiable content. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the graph orchestration architecture, so a neutral score is assigned. Without concrete code or documentation, it is impossible to assess architectural soundness, maintainability, or practical viability. (Score: 3)
-  - Cited Evidence: 
-
-**Remediation:** Review and improve code for criterion: graph_orchestration.
-
-### Safe Tool Engineering (Score: 1)
-
-- **Defense:** No evidence was provided to assess the implementation of safe tool engineering. In the absence of concrete code or documentation, a neutral score is assigned, reflecting neither a violation nor a clear demonstration of best practices. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to assess the system. Without concrete files or code snippets, it is impossible to identify any flaws, security gaps, or laziness. Therefore, the evaluation must default to the lowest score due to lack of verifiable information. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to assess the implementation of safe tool engineering. In the absence of concrete code or documentation, a neutral score is assigned, reflecting neither a violation nor a clear demonstration of best practices. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to assess the system. Without concrete files or code snippets, it is impossible to identify any flaws, security gaps, or laziness. Therefore, the evaluation must default to the lowest score due to lack of verifiable information. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to assess the implementation of safe tool engineering. In the absence of concrete code or documentation, a neutral score is assigned, reflecting neither a violation nor a clear demonstration of best practices. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to assess the system. Without concrete files or code snippets, it is impossible to identify any flaws, security gaps, or laziness. Therefore, the evaluation must default to the lowest score due to lack of verifiable information. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to assess the implementation of safe tool engineering. In the absence of concrete code or documentation, a neutral score is assigned, reflecting neither a violation nor a clear demonstration of best practices. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to assess the system. Without concrete files or code snippets, it is impossible to identify any flaws, security gaps, or laziness. Therefore, the evaluation must default to the lowest score due to lack of verifiable information. (Score: 1)
-  - Cited Evidence: 
-
-**Remediation:** Review and improve code for criterion: safe_tool_engineering.
-
-### Structured Output Enforcement (Score: 2)
-
-- **Defense:** No evidence was provided to support a claim of wrongdoing. In the absence of concrete evidence, the defense argues that the lack of proof does not constitute proof of guilt. Therefore, a moderate score is assigned, reflecting the principle of presumption of innocence while acknowledging the incomplete information. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate the code. Therefore, no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the architectural soundness, maintainability, or practical viability of the codebase. Therefore, a neutral score is assigned. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to support a claim of wrongdoing. In the absence of concrete evidence, the defense argues that the lack of proof does not constitute proof of guilt. Therefore, a moderate score is assigned, reflecting the principle of presumption of innocence while acknowledging the incomplete information. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate the code. Therefore, no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the architectural soundness, maintainability, or practical viability of the codebase. Therefore, a neutral score is assigned. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to support a claim of wrongdoing. In the absence of concrete evidence, the defense argues that the lack of proof does not constitute proof of guilt. Therefore, a moderate score is assigned, reflecting the principle of presumption of innocence while acknowledging the incomplete information. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate the code. Therefore, no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the architectural soundness, maintainability, or practical viability of the codebase. Therefore, a neutral score is assigned. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to support a claim of wrongdoing. In the absence of concrete evidence, the defense argues that the lack of proof does not constitute proof of guilt. Therefore, a moderate score is assigned, reflecting the principle of presumption of innocence while acknowledging the incomplete information. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate the code. Therefore, no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** No evidence was provided to evaluate the architectural soundness, maintainability, or practical viability of the codebase. Therefore, a neutral score is assigned. (Score: 3)
-  - Cited Evidence: 
-
-**Remediation:** Review and improve code for criterion: structured_output_enforcement.
-
-### Judicial Nuance and Dialectics (Score: 2)
-
-- **Defense:** No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible. (Score: 1)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy. (Score: 4)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible. (Score: 1)
-  - Cited Evidence: 
-
-**Dissent:** Dissent detected due to high score variance:
-- Defense: Score 4
-  Argument: No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible.
-  Cited Evidence: 
-- Defense: Score 4
-  Argument: No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible.
-  Cited Evidence: 
-- Defense: Score 4
-  Argument: No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible.
-  Cited Evidence: 
-- Defense: Score 4
-  Argument: No evidence was provided to evaluate the case, yet the defense demonstrates clear intent and a creative approach. In the absence of contrary evidence, a generous score of 4 is awarded to acknowledge the effort and potential merit of the defense strategy.
-  Cited Evidence: 
-- Prosecutor: Score 1
-  Argument: No evidence was provided to evaluate, so no concrete flaws, security gaps, or laziness can be identified. Without documentation or code references, a thorough assessment is impossible.
-  Cited Evidence: 
-This wide disagreement reflects conflicting interpretations of the evidence and rubric. See above for details.
-
-**Remediation:** Review and improve code for criterion: judicial_nuance.
-
-### Chief Justice Synthesis Engine (Score: 2)
-
-- **Defense:** No evidence was provided to support or refute the claim. While the defense's intent and potential for creative workarounds are acknowledged, the absence of concrete evidence warrants a moderate score. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** Unable to assess architectural soundness, maintainability, or practical viability due to lack of provided evidence. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to support or refute the claim. While the defense's intent and potential for creative workarounds are acknowledged, the absence of concrete evidence warrants a moderate score. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** Unable to assess architectural soundness, maintainability, or practical viability due to lack of provided evidence. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to support or refute the claim. While the defense's intent and potential for creative workarounds are acknowledged, the absence of concrete evidence warrants a moderate score. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** Unable to assess architectural soundness, maintainability, or practical viability due to lack of provided evidence. (Score: 3)
-  - Cited Evidence: 
-
-- **Defense:** No evidence was provided to support or refute the claim. While the defense's intent and potential for creative workarounds are acknowledged, the absence of concrete evidence warrants a moderate score. (Score: 3)
-  - Cited Evidence: 
-
-- **Prosecutor:** No evidence was provided to evaluate, so no flaws, security gaps, or laziness can be identified. (Score: 1)
-  - Cited Evidence: 
-
-- **TechLead:** Unable to assess architectural soundness, maintainability, or practical viability due to lack of provided evidence. (Score: 3)
-  - Cited Evidence: 
-
-**Remediation:** Review and improve code for criterion: chief_justice_synthesis.
-
-
-## Remediation Plan
+# Audit Report for `https://github.com/Azazh/the-automaton-auditor.git`
+
+---
+## 📝 AuditReport Model Fields
+
+**repo_url:** `https://github.com/Azazh/the-automaton-auditor.git`  
+**executive_summary:** Final audit complete. Aggregate score: 3.0. See breakdown below.  
+**overall_score:** `3.0`  
+**remediation_plan:** Review and improve code for criterion: git_forensic_analysis.
+Review and improve code for criterion: state_management_rigor.
+Review and improve code for criterion: graph_orchestration.
+Review and improve code for criterion: safe_tool_engineering.  
+**criteria (count):** `4`  
+
+---
+## 🏆 Executive Summary
+
+> Final audit complete. Aggregate score: 3.0. See breakdown below.
+
+---
+## 📊 Criterion Breakdown
+
+
+### Git Forensic Analysis  
+**Score:** `5`  
+**Criterion ID:** `git_forensic_analysis`  
+**Remediation:** Review and improve code for criterion: git_forensic_analysis.  
+**Judge Opinions:**
+- **Defense**  
+  - Score: `5`  
+  - Argument: No evidence was found to support any claim of wrongdoing. In the absence of any concrete evidence, the defense argues that the defendant should receive the maximum score, reflecting the lack of any proven fault.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `5`  
+  - Argument: No evidence was found to support any claim of wrongdoing. In the absence of any concrete evidence, the defense argues that the defendant should receive the maximum score, reflecting the lack of any proven fault.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `5`  
+  - Argument: No evidence was found to support any claim of wrongdoing. In the absence of any concrete evidence, the defense argues that the defendant should receive the maximum score, reflecting the lack of any proven fault.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `5`  
+  - Argument: No evidence was found to support any claim of wrongdoing. In the absence of any concrete evidence, the defense argues that the defendant should receive the maximum score, reflecting the lack of any proven fault.
+  - Cited Evidence: None
+
+### State Management Rigor  
+**Score:** `3`  
+**Criterion ID:** `state_management_rigor`  
+**Remediation:** Review and improve code for criterion: state_management_rigor.  
+**Judge Opinions:**
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was provided to evaluate the rigor of state management. Without concrete examples or documentation, it is not possible to confirm adherence to best practices or identify shortcomings. Therefore, a moderate score is assigned, reflecting uncertainty rather than definitive judgment.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was provided to evaluate the rigor of state management. Without concrete examples or documentation, it is not possible to confirm adherence to best practices or identify shortcomings. Therefore, a moderate score is assigned, reflecting uncertainty rather than definitive judgment.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was provided to evaluate the rigor of state management. Without concrete examples or documentation, it is not possible to confirm adherence to best practices or identify shortcomings. Therefore, a moderate score is assigned, reflecting uncertainty rather than definitive judgment.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was provided to evaluate the rigor of state management. Without concrete examples or documentation, it is not possible to confirm adherence to best practices or identify shortcomings. Therefore, a moderate score is assigned, reflecting uncertainty rather than definitive judgment.
+  - Cited Evidence: None
+
+### Graph Orchestration Architecture  
+**Score:** `3`  
+**Criterion ID:** `graph_orchestration`  
+**Remediation:** Review and improve code for criterion: graph_orchestration.  
+**Judge Opinions:**
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was found to assess graph orchestration, but assuming reasonable effort and intent, a moderate score is assigned.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was found to assess graph orchestration, but assuming reasonable effort and intent, a moderate score is assigned.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was found to assess graph orchestration, but assuming reasonable effort and intent, a moderate score is assigned.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `3`  
+  - Argument: No evidence was found to assess graph orchestration, but assuming reasonable effort and intent, a moderate score is assigned.
+  - Cited Evidence: None
+
+### Safe Tool Engineering  
+**Score:** `1`  
+**Criterion ID:** `safe_tool_engineering`  
+**Remediation:** Review and improve code for criterion: safe_tool_engineering.  
+**Judge Opinions:**
+- **Defense**  
+  - Score: `1`  
+  - Argument: No evidence was provided to evaluate the safe tool engineering criteria, so a minimal score is assigned.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `1`  
+  - Argument: No evidence was provided to evaluate the safe tool engineering criteria, so a minimal score is assigned.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `1`  
+  - Argument: No evidence was provided to evaluate the safe tool engineering criteria, so a minimal score is assigned.
+  - Cited Evidence: None
+- **Defense**  
+  - Score: `1`  
+  - Argument: No evidence was provided to evaluate the safe tool engineering criteria, so a minimal score is assigned.
+  - Cited Evidence: None
+
+---
+## 🛠️ Remediation Plan
 Review and improve code for criterion: git_forensic_analysis.
 Review and improve code for criterion: state_management_rigor.
 Review and improve code for criterion: graph_orchestration.
 Review and improve code for criterion: safe_tool_engineering.
-Review and improve code for criterion: structured_output_enforcement.
-Review and improve code for criterion: judicial_nuance.
-Review and improve code for criterion: chief_justice_synthesis.
+
+---
+## AgentState Fields (Full State Snapshot)
+
+- repo_url: https://github.com/Azazh/the-automaton-auditor.git
+- pdf_path: https://github.com/Azazh/the-automaton-auditor/blob/main/reports/interim_report.pdf
+- rubric_dimensions: [{'id': 'git_forensic_analysis', 'name': 'Git Forensic Analysis', 'target_artifact': 'github_repo', 'forensic_instruction': "Run 'git log --oneline --reverse' on the cloned repository. Count the total number of commits. Check if the commit history tells a progression story: Environment Setup -> Tool Engineering -> Graph Orchestration. Extract all commit messages and timestamps. Flag if there is a single 'init' commit or a 'bulk upload' pattern with no iterative development.", 'success_pattern': 'More than 3 commits showing clear progression from setup to tool engineering to graph orchestration. Atomic, step-by-step history with meaningful commit messages.', 'failure_pattern': "Single 'init' commit or bulk upload of all code at once. No iterative development visible. Timestamps clustered within minutes."}, {'id': 'state_management_rigor', 'name': 'State Management Rigor', 'target_artifact': 'github_repo', 'forensic_instruction': "Scan for 'src/state.py' or equivalent state definitions in 'src/graph.py'. Use AST parsing (not regex) to find classes inheriting from 'BaseModel' (Pydantic) or 'TypedDict'. Verify that the state actively maintains a collection of 'Evidence' objects and a list of 'JudicialOpinion' objects. Check for the use of 'operator.add' and 'operator.ior' as state reducers in 'Annotated' type hints to prevent data overwriting during parallel execution. Capture the full code snippet of the core 'AgentState' definition.", 'success_pattern': "'AgentState' uses TypedDict or BaseModel with Annotated reducers. 'Evidence' and 'JudicialOpinion' are Pydantic BaseModel classes with typed fields. Reducers like 'operator.add' (for lists) and 'operator.ior' (for dicts) are present.", 'failure_pattern': "Plain Python dicts used for state. No Pydantic models. No reducers, meaning parallel agents will overwrite each other's data."}, {'id': 'graph_orchestration', 'name': 'Graph Orchestration Architecture', 'target_artifact': 'github_repo', 'forensic_instruction': "Scan for the 'StateGraph' builder instantiation in 'src/graph.py'. Use AST parsing to analyze 'builder.add_edge()' and 'builder.add_conditional_edges()' calls. Determine if the Detectives (RepoInvestigator, DocAnalyst, VisionInspector) branch out from a single node and run concurrently (fan-out). Verify there is a synchronization node ('EvidenceAggregator' or equivalent) that collects all evidence before the Judges are invoked (fan-in). Verify the Judges (Prosecutor, Defense, TechLead) also fan-out in parallel from the aggregation node and fan-in before the ChiefJustice. Check for conditional edges that handle 'Evidence Missing' or 'Node Failure' scenarios. Capture the specific Python block defining the graph's nodes and edges.", 'success_pattern': 'Two distinct parallel fan-out/fan-in patterns: one for Detectives, one for Judges. Conditional edges handle error states. Graph structure: START -> [Detectives in parallel] -> EvidenceAggregator -> [Judges in parallel] -> ChiefJustice -> END.', 'failure_pattern': 'Purely linear flow (RepoInvestigator -> DocAnalyst -> Judge -> End). No parallel branches. No synchronization node. No conditional edges for error handling.'}, {'id': 'safe_tool_engineering', 'name': 'Safe Tool Engineering', 'target_artifact': 'github_repo', 'forensic_instruction': "Scan 'src/tools/' for the repository cloning logic. Verify that 'tempfile.TemporaryDirectory()' or equivalent sandboxing is used for git clone operations. Check for raw 'os.system()' calls -- these are a security violation. Verify that 'subprocess.run()' or equivalent is used with proper error handling (capturing stdout/stderr, checking return codes). Ensure the cloned repo path is never the live working directory. Check that git authentication errors are handled gracefully. Capture the specific Python function responsible for executing the repository clone.", 'success_pattern': "All git operations run inside 'tempfile.TemporaryDirectory()'. 'subprocess.run()' used with error handling. No raw 'os.system()' calls. Authentication failures caught and reported.", 'failure_pattern': 'Raw \'os.system("git clone <url>")\' drops code into the live working directory. No error handling around shell commands. No input sanitization on the repo URL.'}, {'id': 'structured_output_enforcement', 'name': 'Structured Output Enforcement', 'target_artifact': 'github_repo', 'forensic_instruction': "Scan Judge nodes in 'src/nodes/judges.py'. Verify that LLMs are invoked using '.with_structured_output()' or '.bind_tools()' bound to the Pydantic 'JudicialOpinion' schema. Check that the output includes 'score' (int), 'argument' (str), and 'cited_evidence' (list). Verify there is retry logic or error handling if a Judge returns freeform text instead of structured JSON. Capture the code block responsible for querying the Judge LLMs.", 'success_pattern': "All Judge LLM calls use '.with_structured_output(JudicialOpinion)' or equivalent. Retry logic exists for malformed outputs. Output is validated against the Pydantic schema before being added to state.", 'failure_pattern': 'Judge nodes call LLMs with plain prompts and parse freeform text responses. No Pydantic validation on output. No retry on parse failure.'}, {'id': 'judicial_nuance', 'name': 'Judicial Nuance and Dialectics', 'target_artifact': 'github_repo', 'forensic_instruction': "Scan 'src/nodes/judges.py' or prompt templates. Verify that Prosecutor, Defense, and Tech Lead personas have distinct, conflicting system prompts. Compare the three prompts -- if they share more than 50% of text, flag as 'Persona Collusion'. Check if the Prosecutor prompt includes adversarial language and instructions to look for gaps, security flaws, and laziness. Check if the Defense prompt includes instructions to reward effort, intent, and creative workarounds. Check if the Tech Lead prompt focuses on architectural soundness, maintainability, and practical viability. Verify the graph forces all three judges to run in parallel on the same evidence for each criterion.", 'success_pattern': 'Three clearly distinct personas with conflicting philosophies. Prompts actively instruct the model to be adversarial (Prosecutor), forgiving (Defense), or pragmatic (Tech Lead). Judges produce genuinely different scores and arguments for the same evidence.', 'failure_pattern': "Single agent acts as 'The Grader' with no persona separation. Or three judges exist but share 90% of prompt text, producing near-identical outputs. Scores are random or purely praise/criticism without nuance."}, {'id': 'chief_justice_synthesis', 'name': 'Chief Justice Synthesis Engine', 'target_artifact': 'github_repo', 'forensic_instruction': "Scan 'src/nodes/justice.py' for the ChiefJusticeNode implementation. Verify the conflict resolution uses hardcoded deterministic Python logic, not just an LLM prompt. Check for these specific rules: (1) Rule of Security -- if the Prosecutor identifies a confirmed security vulnerability, the score is capped at 3 regardless of Defense arguments. (2) Rule of Evidence -- if the Defense claims 'Deep Metacognition' but Detective evidence shows the artifact is missing, the Defense is overruled. (3) Rule of Functionality -- if the Tech Lead confirms the architecture is modular, this carries the highest weight for the Architecture criterion. Check if score variance > 2 triggers a specific re-evaluation rule. Verify the output is a structured Markdown report, not a console print.", 'success_pattern': 'Deterministic Python if/else logic implementing named rules (security override, fact supremacy, functionality weight). Score variance triggers specific re-evaluation. Output is a Markdown file with Executive Summary, Criterion Breakdown (with dissent), and Remediation Plan.', 'failure_pattern': 'ChiefJustice is just another LLM prompt that averages the three judge scores. No hardcoded rules. No dissent summary. Output is console text or unstructured.'}, {'id': 'theoretical_depth', 'name': 'Theoretical Depth (Documentation)', 'target_artifact': 'pdf_report', 'forensic_instruction': "Search the PDF report for these specific terms: 'Dialectical Synthesis', 'Fan-In / Fan-Out', 'Metacognition', 'State Synchronization'. Determine if the term appears in a substantive architectural explanation or is just a buzzword dropped in the executive summary. Check if the report explains HOW the architecture executes these concepts, not just that they exist. Flag terms that appear without supporting explanation as 'Keyword Dropping'.", 'success_pattern': 'Terms appear in detailed architectural explanations. The report explains how Dialectical Synthesis is implemented via three parallel judge personas. Fan-In/Fan-Out is tied to specific graph edges. Metacognition is connected to the system evaluating its own evaluation quality.', 'failure_pattern': "Terms appear only in the executive summary or introduction. No connection to actual implementation. 'We used Dialectical Synthesis' with no explanation of how."}, {'id': 'report_accuracy', 'name': 'Report Accuracy (Cross-Reference)', 'target_artifact': 'pdf_report', 'forensic_instruction': "Extract all file paths mentioned in the PDF report (e.g., 'We isolated the AST logic in src/tools/ast_parser.py', 'We implemented parallel Judges in src/nodes/judges.py'). Cross-reference each claimed file path against the evidence collected by the RepoInvestigator. Build two lists: (1) Verified Paths -- files that the report mentions and actually exist in the repo. (2) Hallucinated Paths -- files the report claims exist but the RepoInvestigator found no evidence of. Flag any claims about features (e.g., 'We implemented parallel Judges') where the code evidence contradicts the claim.", 'success_pattern': 'All file paths mentioned in the report exist in the repo. Feature claims match code evidence. Zero hallucinated paths.', 'failure_pattern': 'Report references files that do not exist. Claims parallel execution but code shows linear flow. Multiple hallucinated paths detected.'}, {'id': 'swarm_visual', 'name': 'Architectural Diagram Analysis', 'target_artifact': 'pdf_images', 'forensic_instruction': "Extract images from the PDF report. Classify each diagram: is it an accurate LangGraph State Machine diagram, a sequence diagram, or just generic flowchart boxes? Check if the diagram explicitly visualizes the parallel split: START -> [Detectives in parallel] -> Evidence Aggregation -> [Prosecutor || Defense || TechLead in parallel] -> Chief Justice Synthesis -> END. Verify the diagram distinguishes between parallel branches and sequential steps. Flag diagrams that show a simple linear pipeline as 'Misleading Architecture Visual'.", 'success_pattern': 'Diagram accurately represents the StateGraph with clear parallel branches for both Detectives and Judges. Fan-out and fan-in points are visually distinct. Flow matches the actual code architecture.', 'failure_pattern': 'Generic box-and-arrow diagram with no indication of parallelism. Or no diagram present at all. Diagram shows linear flow that contradicts the parallel architecture claimed in the report.'}]
+- evidences (keys): ['doc_error', 'vision_error']
+- opinions (count): 16
+- final_report: missing
