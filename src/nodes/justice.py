@@ -51,18 +51,50 @@ def apply_synthesis_rules(criterion_id, opinions: List[JudicialOpinion], evidenc
 def compute_variance(opinions: List[JudicialOpinion]) -> float:
     scores = [op.score for op in opinions]
     return variance(scores) if len(scores) > 1 else 0.0
+def render_agentstate_fields(state: dict) -> str:
+        """Render all AgentState fields and their values for explicit report inclusion."""
+        lines = ["\n---\n## AgentState Fields (Full State Snapshot)\n"]
+        lines.append(f"- repo_url: {state.get('repo_url','')}")
+        lines.append(f"- pdf_path: {state.get('pdf_path','')}")
+        lines.append(f"- rubric_dimensions: {state.get('rubric_dimensions','')}")
+        evidences = state.get('evidences',{})
+        lines.append(f"- evidences (keys): {list(evidences.keys())}")
+        opinions = state.get('opinions',[])
+        lines.append(f"- opinions (count): {len(opinions)}")
+        lines.append(f"- final_report: {'present' if state.get('final_report') else 'missing'}")
+        return "\n".join(lines)
 
 def render_markdown_report(report: AuditReport) -> str:
-    md = [f"# Audit Report for {report.repo_url}", "\n## Executive Summary\n", report.executive_summary, "\n## Criterion Breakdown\n"]
+    md = [f"# Audit Report for `{report.repo_url}`"]
+    md.append("\n---\n## 📝 AuditReport Model Fields\n")
+    md.append(f"**repo_url:** `{report.repo_url}`  ")
+    md.append(f"**executive_summary:** {report.executive_summary}  ")
+    md.append(f"**overall_score:** `{report.overall_score}`  ")
+    md.append(f"**remediation_plan:** {report.remediation_plan}  ")
+    md.append(f"**criteria (count):** `{len(report.criteria)}`  ")
+    md.append("\n---\n## 🏆 Executive Summary\n")
+    md.append(f"> {report.executive_summary}")
+    md.append("\n---\n## 📊 Criterion Breakdown\n")
     for crit in report.criteria:
-        md.append(f"### {crit.dimension_name} (Score: {crit.final_score})\n")
-        for op in crit.judge_opinions:
-            md.append(f"- **{op.judge}:** {op.argument} (Score: {op.score})\n  - Cited Evidence: {', '.join(op.cited_evidence)}\n")
+        md.append(f"\n### {crit.dimension_name}  ")
+        md.append(f"**Score:** `{crit.final_score}`  ")
+        md.append(f"**Criterion ID:** `{crit.dimension_id}`  ")
+        md.append(f"**Remediation:** {crit.remediation}  ")
         if crit.dissent_summary:
-            md.append(f"**Dissent:** {crit.dissent_summary}\n")
-        md.append(f"**Remediation:** {crit.remediation}\n")
-    md.append(f"\n## Remediation Plan\n{report.remediation_plan}\n")
+            md.append(f"**Dissent:**\n> {crit.dissent_summary}\n")
+        md.append(f"**Judge Opinions:**")
+        for op in crit.judge_opinions:
+            md.append(f"- **{op.judge}**  ")
+            md.append(f"  - Score: `{op.score}`  ")
+            md.append(f"  - Argument: {op.argument}")
+            if op.cited_evidence and any(e.strip() for e in op.cited_evidence):
+                md.append(f"  - Cited Evidence: {', '.join([e for e in op.cited_evidence if e.strip()])}")
+            else:
+                md.append(f"  - Cited Evidence: None")
+    md.append(f"\n---\n## 🛠️ Remediation Plan\n{report.remediation_plan}\n")
     return "\n".join(md)
+
+ 
 
 async def chief_justice(state: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -114,6 +146,7 @@ async def chief_justice(state: Dict[str, Any]) -> Dict[str, Any]:
     output_path = os.path.join(output_dir, 'audit_report.md')
     with open(output_path, 'w') as f:
         f.write(render_markdown_report(report))
+        f.write(render_agentstate_fields(state))
     print(f"[ChiefJustice] Markdown report written to {output_path}")
     state["final_report"] = report
     return state
