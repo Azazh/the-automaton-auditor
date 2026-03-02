@@ -5,13 +5,21 @@ from typing import Dict, Any, List
 from src.state import JudicialOpinion, CriterionResult, AuditReport
 from statistics import variance, mean
 
+
 def load_rubric():
     rubric_path = os.path.join(os.path.dirname(__file__), '../../rubric/week2_rubric.json')
     with open(rubric_path, 'r') as f:
         return json.load(f)
 
-RUBRIC = load_rubric()
-SYNTHESIS_RULES = RUBRIC.get("synthesis_rules", {})
+# Load synthesis rules from file for fallback
+SYNTHESIS_RULES_FROM_FILE = load_rubric().get("synthesis_rules", {})
+
+def get_rubric_from_state(state: Dict[str, Any]) -> dict:
+    # Use rubric_dimensions from state if present, else fallback to file
+    if "rubric_dimensions" in state and state["rubric_dimensions"]:
+        return {"dimensions": state["rubric_dimensions"], "synthesis_rules": SYNTHESIS_RULES_FROM_FILE}
+    else:
+        return load_rubric()
 
 def get_remediation_for_criterion(criterion_id: str) -> str:
     # Placeholder: In a real system, this would be more sophisticated
@@ -103,7 +111,8 @@ async def chief_justice(state: Dict[str, Any]) -> Dict[str, Any]:
     print("[ChiefJustice] Synthesizing final verdict.")
     opinions = state.get("opinions", [])
     evidences = state.get("evidences", {})
-    rubric = RUBRIC["dimensions"]
+    rubric_bundle = get_rubric_from_state(state)
+    rubric = rubric_bundle["dimensions"]
     criteria_results = []
     total_score = 0
     for dim in rubric:
@@ -142,6 +151,7 @@ async def chief_justice(state: Dict[str, Any]) -> Dict[str, Any]:
         output_dir = os.path.join(os.path.dirname(__file__), '../../audit/report_onpeer_generated')
     else:
         output_dir = os.path.join(os.path.dirname(__file__), '../../audit/report_onself_generated')
+        
     os.makedirs(output_dir, exist_ok=True)
     output_path = os.path.join(output_dir, 'audit_report.md')
     with open(output_path, 'w') as f:

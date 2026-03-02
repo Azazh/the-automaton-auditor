@@ -28,8 +28,8 @@ async def main():
     print(f"[main] Target set to: {target}")
 
     if target == 'peer':
-        repo_url = os.getenv("PEER_REPO_URL")
-        pdf_path = os.getenv("PEER_PDF_PATH")
+        repo_url = os.getenv("PEER_REPO_URL2")
+        pdf_path = os.getenv("PEER_PDF_PATH2")
     else:
         repo_url = os.getenv("REPO_URL")
         pdf_path = os.getenv("PDF_PATH")
@@ -37,12 +37,12 @@ async def main():
     # Load rubric from file if exists
     rubric_dimensions = []
     rubric_path = os.getenv("RUBRIC_PATH", "rubric/week2_rubric.json")
+    rubric_data = {}
     if os.path.exists(rubric_path):
         import json
         with open(rubric_path) as f:
             rubric_data = json.load(f)
             rubric_dimensions = rubric_data.get("dimensions", [])
-
 
     print(f"[env] TARGET: {target}")
     print(f"[env] REPO_URL: {repo_url}")
