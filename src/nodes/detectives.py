@@ -241,7 +241,7 @@ async def doc_analyst(state: Dict[str, Any]) -> Dict[str, Any]:
     print("[DocAnalyst] PDF forensic analysis complete.")
     return {"evidences": state["evidences"]}
 
-async def vision_inspector(state: Dict[str, Any]) -> Dict[str, Any]:
+async def vision_cheinspector(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     VisionInspector: Multimodal detective. Executes rubric-driven tasks on PDF images using modular vision_tools.
     Only runs tasks assigned by context_builder. Prints debug info for each step.
