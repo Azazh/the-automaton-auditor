@@ -1,16 +1,23 @@
+
 from typing import List, Dict
 from PyPDF2 import PdfReader
 import os
+import requests
+from io import BytesIO
 
 def parse_pdf(pdf_path: str) -> List[str]:
     """
     Parse a PDF into a list of text sections (one per page).
     """
-    print(f"[doc_tools] Parsing PDF: {pdf_path}")
-    if not os.path.exists(pdf_path):
-        print("[doc_tools][ERROR] PDF not found.")
-        raise FileNotFoundError(f"PDF not found: {pdf_path}")
-    reader = PdfReader(pdf_path)
+    print(f"[doc_tools] Parsing PDF from URL: {pdf_path}")
+    if not (pdf_path.startswith("http://") or pdf_path.startswith("https://")):
+        raise ValueError("Only HTTPS/HTTP URLs are supported for PDF parsing.")
+    resp = requests.get(pdf_path)
+    if resp.status_code != 200:
+        print("[doc_tools][ERROR] Failed to download PDF from URL.")
+        raise FileNotFoundError(f"Failed to download PDF: {pdf_path}")
+    pdf_file = BytesIO(resp.content)
+    reader = PdfReader(pdf_file)
     sections = [page.extract_text() or "" for page in reader.pages]
     print(f"[doc_tools] Extracted {len(sections)} pages.")
     return sections

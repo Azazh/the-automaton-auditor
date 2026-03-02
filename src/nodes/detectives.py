@@ -2,6 +2,10 @@ import os
 from src.state import Evidence
 from src.tools import repo_tools, doc_tools, vision_tools
 from typing import Dict, Any, List
+from src.utils.llm_provider import LLMProvider
+import json as _json
+import traceback
+
 
 async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
     """
@@ -11,7 +15,30 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
     print("[RepoInvestigator] Starting forensic analysis.")
     repo_url = state.get("repo_url")
     branch = "main"
-    tasks = state.get("forensic_tasks", {}).get("repo_investigator", [])
+    # Dynamically build tasks from rubric_dimensions if not present
+    tasks = state.get("forensic_tasks", {}).get("repo_investigator")
+    if tasks is None or len(tasks) == 0:
+        tasks = []
+        rubric_dimensions = state.get("rubric_dimensions", [])
+        for crit in rubric_dimensions:
+            # For backward compatibility, some rubrics may have dimensions as criteria
+            if crit.get("id") and crit.get("forensic_instruction"):
+                criteria = [crit]
+            else:
+                criteria = crit.get("criteria", [])
+            for c in criteria:
+                crit_id = c.get("id", "")
+                target_artifact = c.get("target_artifact", "")
+                entry = {
+                    "id": crit_id,
+                    "name": c.get("name", ""),
+                    "forensic_instruction": c.get("forensic_instruction", "")
+                }
+                if target_artifact == "github_repo" or crit_id in ["git_forensic_analysis", "state_management_rigor", "graph_orchestration", "safe_tool_engineering", "structured_output_enforcement", "judicial_nuance", "chief_justice_synthesis"]:
+                    tasks.append(entry)
+        print(f"[RepoInvestigator] (Dynamic) Tasks: {tasks}")
+    else:
+        print(f"[RepoInvestigator] Tasks: {tasks}")
     if "evidences" not in state or not isinstance(state["evidences"], dict):
         state["evidences"] = {}
     evidences = {}
@@ -72,11 +99,12 @@ async def repo_investigator(state: Dict[str, Any]) -> Dict[str, Any]:
                 print(f"[RepoInvestigator] Evidence: {evidence_result}")
         state["evidences"].update(evidences)
     except Exception as e:
-        print(f"[RepoInvestigator][ERROR] {e}")
+        tb_str = traceback.format_exc()
+        print(f"[RepoInvestigator][ERROR] {e}\nTraceback:\n{tb_str}")
         state["evidences"]["repo_error"] = [Evidence(
             goal="RepoInvestigator Error",
             found=False,
-            content=str(e),
+            content=f"{e}\nTraceback:\n{tb_str}",
             location="repo_url",
             rationale="Error during repo investigation.",
             confidence=0.0
@@ -90,10 +118,31 @@ async def doc_analyst(state: Dict[str, Any]) -> Dict[str, Any]:
     Only runs tasks assigned by context_builder. Prints debug info for each step.
     """
     print("[DocAnalyst] Starting PDF forensic analysis.")
-    from src.utils.llm_provider import LLMProvider
-    import json as _json
+
     pdf_path = state.get("pdf_path")
-    tasks = state.get("forensic_tasks", {}).get("doc_analyst", [])
+    # Dynamically build tasks from rubric_dimensions if not present
+    tasks = state.get("forensic_tasks", {}).get("doc_analyst")
+    if tasks is None or len(tasks) == 0:
+        tasks = []
+        rubric_dimensions = state.get("rubric_dimensions", [])
+        for crit in rubric_dimensions:
+            if crit.get("id") and crit.get("forensic_instruction"):
+                criteria = [crit]
+            else:
+                criteria = crit.get("criteria", [])
+            for c in criteria:
+                crit_id = c.get("id", "")
+                target_artifact = c.get("target_artifact", "")
+                entry = {
+                    "id": crit_id,
+                    "name": c.get("name", ""),
+                    "forensic_instruction": c.get("forensic_instruction", "")
+                }
+                if target_artifact == "pdf_report" or crit_id in ["theoretical_depth", "report_accuracy"]:
+                    tasks.append(entry)
+        print(f"[DocAnalyst] (Dynamic) Tasks: {tasks}")
+    else:
+        print(f"[DocAnalyst] Tasks: {tasks}")
     if "evidences" not in state or not isinstance(state["evidences"], dict):
         state["evidences"] = {}
     evidences = {}
@@ -179,11 +228,12 @@ async def doc_analyst(state: Dict[str, Any]) -> Dict[str, Any]:
                         continue
         state["evidences"].update(evidences)
     except Exception as e:
-        print(f"[DocAnalyst][ERROR] {e}")
+        tb_str = traceback.format_exc()
+        print(f"[DocAnalyst][ERROR] {e}\nTraceback:\n{tb_str}")
         state["evidences"]["doc_error"] = [Evidence(
             goal="DocAnalyst Error",
             found=False,
-            content=str(e),
+            content=f"{e}\nTraceback:\n{tb_str}",
             location="pdf_path",
             rationale="Error during PDF analysis.",
             confidence=0.0
@@ -198,7 +248,29 @@ async def vision_inspector(state: Dict[str, Any]) -> Dict[str, Any]:
     """
     print("[VisionInspector] Starting image forensic analysis.")
     pdf_path = state.get("pdf_path")
-    tasks = state.get("forensic_tasks", {}).get("vision_inspector", [])
+    # Dynamically build tasks from rubric_dimensions if not present
+    tasks = state.get("forensic_tasks", {}).get("vision_inspector")
+    if tasks is None or len(tasks) == 0:
+        tasks = []
+        rubric_dimensions = state.get("rubric_dimensions", [])
+        for crit in rubric_dimensions:
+            if crit.get("id") and crit.get("forensic_instruction"):
+                criteria = [crit]
+            else:
+                criteria = crit.get("criteria", [])
+            for c in criteria:
+                crit_id = c.get("id", "")
+                target_artifact = c.get("target_artifact", "")
+                entry = {
+                    "id": crit_id,
+                    "name": c.get("name", ""),
+                    "forensic_instruction": c.get("forensic_instruction", "")
+                }
+                if target_artifact == "pdf_images" or crit_id in ["swarm_visual"]:
+                    tasks.append(entry)
+        print(f"[VisionInspector] (Dynamic) Tasks: {tasks}")
+    else:
+        print(f"[VisionInspector] Tasks: {tasks}")
     if "evidences" not in state or not isinstance(state["evidences"], dict):
         state["evidences"] = {}
     evidences = {}

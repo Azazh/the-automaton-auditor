@@ -8,11 +8,7 @@ from src.utils.llm_provider import LLMProvider
 from PyPDF2 import PdfReader
 from PIL import Image
 import io
-import os
-from typing import List, Dict
-import base64       
-from src.utils.llm_provider import LLMProvider
-import io
+import base64
 
 class VisionInspector:
     """
@@ -73,13 +69,19 @@ Instructions:
 def extract_images_from_pdf(pdf_path: str) -> List[Image.Image]:
     """
     Extract images from a PDF file as PIL Images.
-    Note: pdf_path must be a local file path, not a URL. If a URL is passed, this will fail with FileNotFoundError.
+    Only supports HTTPS/HTTP URLs. Downloads the PDF in memory and extracts images.
     """
-    print(f"[vision_tools] Extracting images from PDF: {pdf_path}")
-    if not os.path.exists(pdf_path):
-        print("[vision_tools][ERROR] PDF not found.")
-        raise FileNotFoundError(f"PDF not found: {pdf_path}")
-    reader = PdfReader(pdf_path)
+    print(f"[vision_tools] Extracting images from PDF URL: {pdf_path}")
+    import requests
+    from io import BytesIO
+    if not (pdf_path.startswith("http://") or pdf_path.startswith("https://")):
+        raise ValueError("Only HTTPS/HTTP URLs are supported for PDF image extraction.")
+    resp = requests.get(pdf_path)
+    if resp.status_code != 200:
+        print("[vision_tools][ERROR] Failed to download PDF from URL.")
+        raise FileNotFoundError(f"Failed to download PDF: {pdf_path}")
+    pdf_file = BytesIO(resp.content)
+    reader = PdfReader(pdf_file)
     images = []
     for page in reader.pages:
         if '/XObject' in page['/Resources']:
@@ -93,26 +95,6 @@ def extract_images_from_pdf(pdf_path: str) -> List[Image.Image]:
     return images
 
 
-def extract_images_from_pdf(pdf_path: str) -> List[Image.Image]:
-    """
-    Extract images from a PDF file as PIL Images.
-    """
-    print(f"[vision_tools] Extracting images from PDF: {pdf_path}")
-    if not os.path.exists(pdf_path):
-        print("[vision_tools][ERROR] PDF not found.")
-        raise FileNotFoundError(f"PDF not found: {pdf_path}")
-    reader = PdfReader(pdf_path)
-    images = []
-    for page in reader.pages:
-        if '/XObject' in page['/Resources']:
-            xObject = page['/Resources']['/XObject'].get_object()
-            for obj in xObject:
-                if xObject[obj]['/Subtype'] == '/Image':
-                    data = xObject[obj]._data
-                    img = Image.open(io.BytesIO(data))
-                    images.append(img)
-    print(f"[vision_tools] Extracted {len(images)} images.")
-    return images
 
 def classify_diagram(images: List[Image.Image], llm_vision_fn) -> List[Dict[str, str]]:
     """
@@ -133,7 +115,7 @@ def vision_llm_openrouter(img) -> Dict[str, str]:
     Calls OpenRouter LLM with a base64-encoded image and a diagram classification prompt.
     Returns a dict with 'type' and 'flow_description'.
     """
-    llm = LLMProvider()
+    llm = LLMProvider(provider="groq")  # Use "gro" for OpenRouter
     # Convert image to base64
     buffered = io.BytesIO()
     img.save(buffered, format="PNG")
