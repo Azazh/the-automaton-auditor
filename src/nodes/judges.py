@@ -9,6 +9,8 @@ import json as _json
 import inspect
 import time
 import re
+import asyncio
+
 
 # Rubric loading best practice: use rubric_dimensions from state if present
 def load_rubric():
@@ -90,7 +92,6 @@ async def judge_node(state: Dict[str, Any], persona: str, prompt: str) -> Dict[s
     Retries if output is not valid JudicialOpinion.
     """
 
-    import asyncio
     print(f"[{persona}] Judge node starting.")
     tasks = get_judge_tasks()
     llm = LLMProvider(provider="openrouter")

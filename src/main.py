@@ -28,8 +28,8 @@ async def main():
     print(f"[main] Target set to: {target}")
 
     if target == 'peer':
-        repo_url = os.getenv("PEER_REPO_URL2")
-        pdf_path = os.getenv("PEER_PDF_PATH2")
+        repo_url = os.getenv("PEER_REPO_URL")
+        pdf_path = os.getenv("PEER_PDF_PATH")
     else:
         repo_url = os.getenv("REPO_URL")
         pdf_path = os.getenv("PDF_PATH")
